@@ -19,6 +19,11 @@ class IsarLogStorage implements ILogStorage {
   }
 
   @override
+  Future<void> dispose() async {
+    await _db.close();
+  }
+
+  @override
   Future<void> applyRetentionPolicy(RetentionPolicy policy) async {
     if (policy case KeepDaysPolicy(:final days)) {
       await _db.writeTxn(() async {
@@ -42,6 +47,20 @@ class IsarLogStorage implements ILogStorage {
       });
     }
   }
+
+  @override
+  Future<List<String>> getTags() => _db.logEntries
+      .where()
+      .filter()
+      .tagIsNotNull()
+      .distinctByTag()
+      .tagProperty()
+      .findAll()
+      .then((tags) => tags.cast<String>());
+
+  @override
+  Future<List<LogLevel>> getLevels() =>
+      _db.logEntries.where().distinctByLevel().levelProperty().findAll();
 
   @override
   Future<List<LogEntry>> getAllLogs() async {
@@ -103,20 +122,6 @@ class IsarLogStorage implements ILogStorage {
 
     return entities.map(_fromEntity).toList();
   }
-
-  @override
-  Future<List<String>> getTags() => _db.logEntries
-      .where()
-      .filter()
-      .tagIsNotNull()
-      .distinctByTag()
-      .tagProperty()
-      .findAll()
-      .then((tags) => tags.cast<String>());
-
-  @override
-  Future<List<LogLevel>> getLevels() =>
-      _db.logEntries.where().distinctByLevel().levelProperty().findAll();
 
   @override
   Future<void> writeLog(LogEntry logEntry) async {

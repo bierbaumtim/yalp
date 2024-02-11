@@ -10,6 +10,9 @@ class InMemoryStorage implements ILogStorage {
   Future<void> init() async {}
 
   @override
+  Future<void> dispose() async {}
+
+  @override
   Future<void> applyRetentionPolicy(RetentionPolicy policy) async {
     if (policy is KeepAllPolicy) {
       return;
