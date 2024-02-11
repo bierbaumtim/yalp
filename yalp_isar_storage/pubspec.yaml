@@ -1,7 +1,9 @@
 name: yalp_isar_storage
 description: A starting point for Dart libraries or applications.
 version: 1.0.0
-# repository: https://github.com/my_org/my_repo
+repository: https://github.com/bierbaumtim/yalp/tree/master/yalp_isar_storage
+issue_tracker: https://github.com/bierbaumtim/yalp/issues
+homepage: https://github.com/bierbaumtim/yalp
 
 environment:
   sdk: ">=3.2.0 <4.0.0"
