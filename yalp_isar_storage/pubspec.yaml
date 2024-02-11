@@ -1,0 +1,23 @@
+name: yalp_isar_storage
+description: A starting point for Dart libraries or applications.
+version: 1.0.0
+# repository: https://github.com/my_org/my_repo
+
+environment:
+  sdk: ">=3.2.0 <4.0.0"
+
+# Add regular dependencies here.
+dependencies:
+  isar: ^3.1.0+1
+  isar_flutter_libs: ^3.1.0+1
+  path_provider: ^2.1.2
+
+  yalp_core:
+    path: ../yalp_core
+
+dev_dependencies:
+  build_runner: ^2.4.8
+  isar_generator: ^3.1.0+1
+
+  lints: ^3.0.0
+  test: ^1.24.0
