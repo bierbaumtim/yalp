@@ -33,7 +33,7 @@ class InMemoryStorage implements ILogStorage {
 
   @override
   Future<List<LogEntry>> getLogsFiltered(LogFilterOptions options) async {
-    return _logs.where((log) {
+    final iter = _logs.where((log) {
       if (options.tag != null && log.tag != options.tag) {
         return false;
       }
@@ -51,7 +51,12 @@ class InMemoryStorage implements ILogStorage {
       }
 
       return true;
-    }).toList();
+    }).skip(options.offset ?? 0);
+
+    return switch (options.limit) {
+      var limit? => iter.take(limit).toList(),
+      _ => iter.toList(),
+    };
   }
 
   @override
