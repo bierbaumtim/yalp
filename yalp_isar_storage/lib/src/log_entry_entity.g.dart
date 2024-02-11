@@ -64,7 +64,47 @@ const LogEntryEntitySchema = CollectionSchema(
   deserialize: _logEntryEntityDeserialize,
   deserializeProp: _logEntryEntityDeserializeProp,
   idName: r'id',
-  indexes: {},
+  indexes: {
+    r'level': IndexSchema(
+      id: -730704511986726349,
+      name: r'level',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'level',
+          type: IndexType.value,
+          caseSensitive: false,
+        )
+      ],
+    ),
+    r'tag': IndexSchema(
+      id: -8827799455852696894,
+      name: r'tag',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'tag',
+          type: IndexType.hash,
+          caseSensitive: true,
+        )
+      ],
+    ),
+    r'invocation': IndexSchema(
+      id: -2810775489279597063,
+      name: r'invocation',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'invocation',
+          type: IndexType.hash,
+          caseSensitive: true,
+        )
+      ],
+    )
+  },
   links: {},
   embeddedSchemas: {},
   getId: _logEntryEntityGetId,
@@ -207,6 +247,14 @@ extension LogEntryEntityQueryWhereSort
       return query.addWhereClause(const IdWhereClause.any());
     });
   }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterWhere> anyLevel() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        const IndexWhereClause.any(indexName: r'level'),
+      );
+    });
+  }
 }
 
 extension LogEntryEntityQueryWhere
@@ -277,6 +325,230 @@ extension LogEntryEntityQueryWhere
         upper: upperId,
         includeUpper: includeUpper,
       ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterWhereClause> levelEqualTo(
+      LogLevel level) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'level',
+        value: [level],
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterWhereClause>
+      levelNotEqualTo(LogLevel level) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'level',
+              lower: [],
+              upper: [level],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'level',
+              lower: [level],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'level',
+              lower: [level],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'level',
+              lower: [],
+              upper: [level],
+              includeUpper: false,
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterWhereClause>
+      levelGreaterThan(
+    LogLevel level, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'level',
+        lower: [level],
+        includeLower: include,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterWhereClause> levelLessThan(
+    LogLevel level, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'level',
+        lower: [],
+        upper: [level],
+        includeUpper: include,
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterWhereClause> levelBetween(
+    LogLevel lowerLevel,
+    LogLevel upperLevel, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'level',
+        lower: [lowerLevel],
+        includeLower: includeLower,
+        upper: [upperLevel],
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterWhereClause> tagIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'tag',
+        value: [null],
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterWhereClause>
+      tagIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'tag',
+        lower: [null],
+        includeLower: false,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterWhereClause> tagEqualTo(
+      String? tag) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'tag',
+        value: [tag],
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterWhereClause> tagNotEqualTo(
+      String? tag) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'tag',
+              lower: [],
+              upper: [tag],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'tag',
+              lower: [tag],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'tag',
+              lower: [tag],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'tag',
+              lower: [],
+              upper: [tag],
+              includeUpper: false,
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterWhereClause>
+      invocationIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'invocation',
+        value: [null],
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterWhereClause>
+      invocationIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'invocation',
+        lower: [null],
+        includeLower: false,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterWhereClause>
+      invocationEqualTo(String? invocation) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'invocation',
+        value: [invocation],
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterWhereClause>
+      invocationNotEqualTo(String? invocation) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'invocation',
+              lower: [],
+              upper: [invocation],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'invocation',
+              lower: [invocation],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'invocation',
+              lower: [invocation],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'invocation',
+              lower: [],
+              upper: [invocation],
+              includeUpper: false,
+            ));
+      }
     });
   }
 }

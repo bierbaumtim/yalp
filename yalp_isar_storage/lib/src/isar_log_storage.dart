@@ -4,7 +4,7 @@ import 'package:yalp_core/yalp_core.dart';
 
 import 'log_entry_entity.dart';
 
-class IsarStorage implements ILogStorage {
+class IsarLogStorage implements ILogStorage {
   late Isar _db;
 
   @override
@@ -14,6 +14,7 @@ class IsarStorage implements ILogStorage {
     _db = await Isar.open(
       [LogEntryEntitySchema],
       directory: dir.path,
+      name: 'logs.isar',
     );
   }
 
@@ -44,7 +45,8 @@ class IsarStorage implements ILogStorage {
 
   @override
   Future<List<LogEntry>> getAllLogs() async {
-    final entities = await _db.logEntries.where().findAll();
+    final entities =
+        await _db.logEntries.where().sortByTimestampDesc().findAll();
 
     return entities.map(_fromEntity).toList();
   }
@@ -54,14 +56,47 @@ class IsarStorage implements ILogStorage {
     final entities = await _db.logEntries
         .where()
         .filter()
-        .optional(options.tag != null, (q) => q.tagEqualTo(options.tag!))
+        .optional(
+          options.tags.isNotEmpty,
+          (q) => q.group((q) {
+            var query = q.tagEqualTo(options.tags.first);
+
+            for (final tag in options.tags.skip(1)) {
+              query = query.or().tagEqualTo(tag);
+            }
+
+            return query;
+          }),
+        )
         .and()
-        .optional(options.level != null, (q) => q.levelEqualTo(options.level!))
+        .optional(
+          options.level.isNotEmpty,
+          (q) => q.group((q) {
+            var query = q.levelEqualTo(options.level.first);
+
+            for (final level in options.level.skip(1)) {
+              query = query.or().levelEqualTo(level);
+            }
+
+            return query;
+          }),
+        )
         .and()
-        .optional(options.start != null,
-            (q) => q.timestampGreaterThan(options.start!))
+        .optional(
+          options.start != null,
+          (q) => q.timestampGreaterThan(options.start!),
+        )
         .and()
-        .optional(options.end != null, (q) => q.timestampLessThan(options.end!))
+        .optional(
+          options.end != null,
+          (q) => q.timestampLessThan(options.end!),
+        )
+        .and()
+        .optional(
+          options.invocation != null,
+          (q) => q.invocationEqualTo(options.invocation!),
+        )
+        .sortByTimestampDesc()
         .optional(options.offset != null, (q) => q.offset(options.offset!))
         .optional(options.limit != null, (q) => q.limit(options.limit!))
         .findAll();

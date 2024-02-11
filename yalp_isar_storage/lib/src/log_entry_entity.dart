@@ -11,11 +11,16 @@ class LogEntryEntity {
   final String message;
   final DateTime timestamp;
 
+  @Index()
   @enumerated
   final LogLevel level;
+  
+  @Index()
   final String? tag;
   final String className;
   final String functionName;
+
+  @Index()
   final String? invocation;
 
   final String? stackTrace;
