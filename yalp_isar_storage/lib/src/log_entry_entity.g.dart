@@ -22,39 +22,44 @@ const LogEntryEntitySchema = CollectionSchema(
       name: r'className',
       type: IsarType.string,
     ),
-    r'functionName': PropertySchema(
+    r'error': PropertySchema(
       id: 1,
+      name: r'error',
+      type: IsarType.string,
+    ),
+    r'functionName': PropertySchema(
+      id: 2,
       name: r'functionName',
       type: IsarType.string,
     ),
     r'invocation': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'invocation',
       type: IsarType.string,
     ),
     r'level': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'level',
       type: IsarType.byte,
       enumMap: _LogEntryEntitylevelEnumValueMap,
     ),
     r'message': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'message',
       type: IsarType.string,
     ),
     r'stackTrace': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'stackTrace',
       type: IsarType.string,
     ),
     r'tag': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'tag',
       type: IsarType.string,
     ),
     r'timestamp': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'timestamp',
       type: IsarType.dateTime,
     )
@@ -120,6 +125,12 @@ int _logEntryEntityEstimateSize(
 ) {
   var bytesCount = offsets.last;
   bytesCount += 3 + object.className.length * 3;
+  {
+    final value = object.error;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.functionName.length * 3;
   {
     final value = object.invocation;
@@ -150,13 +161,14 @@ void _logEntryEntitySerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.className);
-  writer.writeString(offsets[1], object.functionName);
-  writer.writeString(offsets[2], object.invocation);
-  writer.writeByte(offsets[3], object.level.index);
-  writer.writeString(offsets[4], object.message);
-  writer.writeString(offsets[5], object.stackTrace);
-  writer.writeString(offsets[6], object.tag);
-  writer.writeDateTime(offsets[7], object.timestamp);
+  writer.writeString(offsets[1], object.error);
+  writer.writeString(offsets[2], object.functionName);
+  writer.writeString(offsets[3], object.invocation);
+  writer.writeByte(offsets[4], object.level.index);
+  writer.writeString(offsets[5], object.message);
+  writer.writeString(offsets[6], object.stackTrace);
+  writer.writeString(offsets[7], object.tag);
+  writer.writeDateTime(offsets[8], object.timestamp);
 }
 
 LogEntryEntity _logEntryEntityDeserialize(
@@ -167,16 +179,17 @@ LogEntryEntity _logEntryEntityDeserialize(
 ) {
   final object = LogEntryEntity(
     className: reader.readString(offsets[0]),
-    functionName: reader.readString(offsets[1]),
+    error: reader.readStringOrNull(offsets[1]),
+    functionName: reader.readString(offsets[2]),
     id: id,
-    invocation: reader.readStringOrNull(offsets[2]),
+    invocation: reader.readStringOrNull(offsets[3]),
     level:
-        _LogEntryEntitylevelValueEnumMap[reader.readByteOrNull(offsets[3])] ??
+        _LogEntryEntitylevelValueEnumMap[reader.readByteOrNull(offsets[4])] ??
             LogLevel.trace,
-    message: reader.readString(offsets[4]),
-    stackTrace: reader.readStringOrNull(offsets[5]),
-    tag: reader.readStringOrNull(offsets[6]),
-    timestamp: reader.readDateTime(offsets[7]),
+    message: reader.readString(offsets[5]),
+    stackTrace: reader.readStringOrNull(offsets[6]),
+    tag: reader.readStringOrNull(offsets[7]),
+    timestamp: reader.readDateTime(offsets[8]),
   );
   return object;
 }
@@ -191,19 +204,21 @@ P _logEntryEntityDeserializeProp<P>(
     case 0:
       return (reader.readString(offset)) as P;
     case 1:
-      return (reader.readString(offset)) as P;
-    case 2:
       return (reader.readStringOrNull(offset)) as P;
+    case 2:
+      return (reader.readString(offset)) as P;
     case 3:
+      return (reader.readStringOrNull(offset)) as P;
+    case 4:
       return (_LogEntryEntitylevelValueEnumMap[reader.readByteOrNull(offset)] ??
           LogLevel.trace) as P;
-    case 4:
-      return (reader.readString(offset)) as P;
     case 5:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 6:
       return (reader.readStringOrNull(offset)) as P;
     case 7:
+      return (reader.readStringOrNull(offset)) as P;
+    case 8:
       return (reader.readDateTime(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -686,6 +701,160 @@ extension LogEntryEntityQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'className',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+      errorIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'error',
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+      errorIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'error',
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+      errorEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'error',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+      errorGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'error',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+      errorLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'error',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+      errorBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'error',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+      errorStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'error',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+      errorEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'error',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+      errorContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'error',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+      errorMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'error',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+      errorIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'error',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+      errorIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'error',
         value: '',
       ));
     });
@@ -1632,6 +1801,18 @@ extension LogEntryEntityQuerySortBy
     });
   }
 
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy> sortByError() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'error', Sort.asc);
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy> sortByErrorDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'error', Sort.desc);
+    });
+  }
+
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy>
       sortByFunctionName() {
     return QueryBuilder.apply(this, (query) {
@@ -1737,6 +1918,18 @@ extension LogEntryEntityQuerySortThenBy
       thenByClassNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'className', Sort.desc);
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy> thenByError() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'error', Sort.asc);
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy> thenByErrorDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'error', Sort.desc);
     });
   }
 
@@ -1854,6 +2047,13 @@ extension LogEntryEntityQueryWhereDistinct
     });
   }
 
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QDistinct> distinctByError(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'error', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<LogEntryEntity, LogEntryEntity, QDistinct>
       distinctByFunctionName({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1914,6 +2114,12 @@ extension LogEntryEntityQueryProperty
   QueryBuilder<LogEntryEntity, String, QQueryOperations> classNameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'className');
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, String?, QQueryOperations> errorProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'error');
     });
   }
 

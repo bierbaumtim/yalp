@@ -24,6 +24,7 @@ class LogEntryEntity {
   final String? invocation;
 
   final String? stackTrace;
+  final String? error;
 
   LogEntryEntity({
     this.id,
@@ -35,5 +36,6 @@ class LogEntryEntity {
     required this.functionName,
     required this.invocation,
     required this.stackTrace,
+    required this.error,
   });
 }

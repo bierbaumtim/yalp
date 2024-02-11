@@ -134,6 +134,7 @@ class IsarLogStorage implements ILogStorage {
       functionName: logEntry.functionName,
       invocation: logEntry.invocation,
       stackTrace: logEntry.stackTrace?.toString(),
+      error: logEntry.error?.toString(),
     );
 
     try {
@@ -165,6 +166,7 @@ class IsarLogStorage implements ILogStorage {
         var s? => StackTrace.fromString(s),
         _ => null,
       },
+      error: e.error,
     );
   }
 }
