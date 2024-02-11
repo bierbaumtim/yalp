@@ -1,3 +1,5 @@
+import 'package:stack_trace/stack_trace.dart';
+
 import 'helper.dart';
 import 'log_context.dart';
 import 'log_entry.dart';
@@ -28,7 +30,7 @@ sealed class _BaseLogger {
 
   void trace(
     String message, {
-    StackTrace? stacktrace,
+    StackTrace? stackTrace,
     String? tag,
     LogContext? context,
   }) {
@@ -36,7 +38,7 @@ sealed class _BaseLogger {
       message,
       DateTime.now(),
       null,
-      stacktrace,
+      stackTrace,
       LogLevel.trace,
       tag,
       context,
@@ -45,7 +47,7 @@ sealed class _BaseLogger {
 
   void debug(
     String message, {
-    StackTrace? stacktrace,
+    StackTrace? stackTrace,
     String? tag,
     LogContext? context,
   }) {
@@ -53,7 +55,7 @@ sealed class _BaseLogger {
       message,
       DateTime.now(),
       null,
-      stacktrace,
+      stackTrace,
       LogLevel.debug,
       tag,
       context,
@@ -62,7 +64,7 @@ sealed class _BaseLogger {
 
   void info(
     String message, {
-    StackTrace? stacktrace,
+    StackTrace? stackTrace,
     String? tag,
     LogContext? context,
   }) {
@@ -70,7 +72,7 @@ sealed class _BaseLogger {
       message,
       DateTime.now(),
       null,
-      stacktrace,
+      stackTrace,
       LogLevel.info,
       tag,
       context,
@@ -79,7 +81,7 @@ sealed class _BaseLogger {
 
   void warning(
     String message, {
-    StackTrace? stacktrace,
+    StackTrace? stackTrace,
     String? tag,
     LogContext? context,
   }) {
@@ -87,7 +89,7 @@ sealed class _BaseLogger {
       message,
       DateTime.now(),
       null,
-      stacktrace,
+      stackTrace ?? Trace.current(1).vmTrace,
       LogLevel.warning,
       tag,
       context,
@@ -105,7 +107,7 @@ sealed class _BaseLogger {
       message,
       DateTime.now(),
       error,
-      stackTrace,
+      stackTrace ?? Trace.current(1).vmTrace,
       LogLevel.error,
       tag,
       context,
@@ -123,7 +125,7 @@ sealed class _BaseLogger {
       message,
       DateTime.now(),
       error,
-      stackTrace,
+      stackTrace ?? Trace.current(1).vmTrace,
       LogLevel.fatal,
       tag,
       context,
