@@ -7,12 +7,15 @@ class InMemoryStorage implements ILogStorage {
   final List<LogEntry> _logs = [];
 
   @override
+  Future<void> init() async {}
+
+  @override
   Future<void> applyRetentionPolicy(RetentionPolicy policy) async {
-    if (policy is KeepAll) {
+    if (policy is KeepAllPolicy) {
       return;
-    } else if (policy is KeepLast) {
+    } else if (policy is KeepLastPolicy) {
       _logs.removeRange(0, _logs.length - policy.count);
-    } else if (policy is KeepDays) {
+    } else if (policy is KeepDaysPolicy) {
       final now = DateTime.now();
       final cutoff = now.subtract(Duration(days: policy.days));
 

@@ -6,8 +6,8 @@ void main() {
     final logger = Logger();
     final storage = InMemoryStorage();
 
-    setUpAll(() {
-      Logger.root.logStorage = storage;
+    setUpAll(() async {
+      await Logger.root.init(storage, KeepAllPolicy());
     });
 
     setUp(() {

@@ -1,23 +1,23 @@
 sealed class RetentionPolicy {
   const RetentionPolicy._();
 
-  factory RetentionPolicy.keepAll() = KeepAll;
-  factory RetentionPolicy.keepLast({required int count}) = KeepLast;
-  factory RetentionPolicy.keepDays({required int days}) = KeepDays;
+  factory RetentionPolicy.keepAll() = KeepAllPolicy;
+  factory RetentionPolicy.keepLast({required int count}) = KeepLastPolicy;
+  factory RetentionPolicy.keepDays({required int days}) = KeepDaysPolicy;
 }
 
-class KeepAll extends RetentionPolicy {
-  const KeepAll() : super._();
+class KeepAllPolicy extends RetentionPolicy {
+  const KeepAllPolicy() : super._();
 }
 
-class KeepLast extends RetentionPolicy {
+class KeepLastPolicy extends RetentionPolicy {
   final int count;
 
-  const KeepLast({required this.count}) : super._();
+  const KeepLastPolicy({required this.count}) : super._();
 }
 
-class KeepDays extends RetentionPolicy {
+class KeepDaysPolicy extends RetentionPolicy {
   final int days;
 
-  const KeepDays({required this.days}) : super._();
+  const KeepDaysPolicy({required this.days}) : super._();
 }

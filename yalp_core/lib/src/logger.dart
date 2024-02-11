@@ -2,15 +2,23 @@ import 'helper.dart';
 import 'log_context.dart';
 import 'log_entry.dart';
 import 'storage/log_storage_interface.dart';
+import 'storage/retention_policy.dart';
 
 class Logger extends _BaseLogger {
   static RootLogger get root => _BaseLogger.root;
 }
 
 class RootLogger extends _BaseLogger {
-  ILogStorage? logStorage;
+  ILogStorage? _logStorage;
 
   RootLogger._();
+
+  Future<void> init(ILogStorage storage, RetentionPolicy policy) async {
+    _logStorage = storage;
+
+    await _logStorage!.init();
+    await _logStorage!.applyRetentionPolicy(policy);
+  }
 }
 
 sealed class _BaseLogger {
@@ -149,6 +157,6 @@ sealed class _BaseLogger {
       invocation: context?.invocation,
     );
 
-    root.logStorage?.writeLog(entry);
+    root._logStorage?.writeLog(entry);
   }
 }
