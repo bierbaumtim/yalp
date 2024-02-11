@@ -13,6 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  date_format: ^2.0.7
   yalp_core:
     path: ../yalp_core
 
