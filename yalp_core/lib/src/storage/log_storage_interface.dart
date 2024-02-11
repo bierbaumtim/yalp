@@ -8,6 +8,9 @@ abstract interface class ILogStorage {
   Future<List<LogEntry>> getAllLogs();
   Future<List<LogEntry>> getLogsFiltered(LogFilterOptions options);
 
+  Future<List<String>> getTags();
+  Future<List<LogLevel>> getLevels();
+
   Future<void> init();
 
   Future<void> applyRetentionPolicy(RetentionPolicy policy);

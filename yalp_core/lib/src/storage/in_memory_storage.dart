@@ -60,6 +60,19 @@ class InMemoryStorage implements ILogStorage {
   }
 
   @override
+  Future<List<String>> getTags() async => _logs
+      .where(
+        (log) => log.tag != null,
+      )
+      .map<String>((log) => log.tag!)
+      .toSet()
+      .toList();
+
+  @override
+  Future<List<LogLevel>> getLevels() async =>
+      _logs.map<LogLevel>((log) => log.level).toSet().toList();
+
+  @override
   Future<void> writeLog(LogEntry logEntry) async {
     _logs.add(logEntry);
   }

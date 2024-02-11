@@ -105,6 +105,20 @@ class IsarLogStorage implements ILogStorage {
   }
 
   @override
+  Future<List<String>> getTags() => _db.logEntries
+      .where()
+      .filter()
+      .tagIsNotNull()
+      .distinctByTag()
+      .tagProperty()
+      .findAll()
+      .then((tags) => tags.cast<String>());
+
+  @override
+  Future<List<LogLevel>> getLevels() =>
+      _db.logEntries.where().distinctByLevel().levelProperty().findAll();
+
+  @override
   Future<void> writeLog(LogEntry logEntry) async {
     final entity = LogEntryEntity(
       message: logEntry.message,
