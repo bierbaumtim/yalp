@@ -17,7 +17,7 @@ void main() {
     test('Log each method', () {
       final lc = LogContext.tracked(className: 'test', functionName: 'test');
 
-      logger.trace('trace', stacktrace: StackTrace.current);
+      logger.trace('trace', stackTrace: StackTrace.current);
       logger.debug('debug');
       logger.info('info');
       logger.warning('warning');
