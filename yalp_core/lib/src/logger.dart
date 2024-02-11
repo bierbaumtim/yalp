@@ -9,15 +9,17 @@ class Logger extends _BaseLogger {
 }
 
 class RootLogger extends _BaseLogger {
-  ILogStorage? _logStorage;
+  late ILogStorage _logStorage;
 
   RootLogger._();
+
+  ILogStorage get logStorage => _logStorage;
 
   Future<void> init(ILogStorage storage, RetentionPolicy policy) async {
     _logStorage = storage;
 
-    await _logStorage!.init();
-    await _logStorage!.applyRetentionPolicy(policy);
+    await _logStorage.init();
+    await _logStorage.applyRetentionPolicy(policy);
   }
 }
 
@@ -157,6 +159,6 @@ sealed class _BaseLogger {
       invocation: context?.invocation,
     );
 
-    root._logStorage?.writeLog(entry);
+    root._logStorage.writeLog(entry);
   }
 }
