@@ -1,0 +1,188 @@
+import 'package:flutter/material.dart';
+
+import 'package:yalp_core/yalp_core.dart';
+
+import '../../controller/log_viewer_controller.dart';
+import '../filter_selection_chip.dart';
+import '../log_entry_card.dart';
+import '../timespan_filter_chip.dart';
+
+class MaterialLogViewer extends StatefulWidget {
+  const MaterialLogViewer({super.key});
+
+  @override
+  State<MaterialLogViewer> createState() => _MaterialLogViewerState();
+}
+
+class _MaterialLogViewerState extends State<MaterialLogViewer> {
+  late final LogViewController _controller;
+  late final ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = LogViewController();
+    _controller.init().then((_) => _controller.loadLogs());
+
+    _scrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _scrollController.dispose();
+
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Log Viewer'),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(48),
+          child: SizedBox(
+            height: 48,
+            child: _FilterBar(controller: _controller),
+          ),
+        ),
+      ),
+      body: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, _) {
+          if (_controller.isLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (_controller.logs.isEmpty) {
+            return const Center(
+              child: Text('No logs found'),
+            );
+          } else {
+            return NotificationListener(
+              onNotification: (notification) {
+                if (notification is ScrollEndNotification) {
+                  if (notification.metrics.pixels >=
+                          notification.metrics.maxScrollExtent - 100 &&
+                      !_controller.isFetchingMore) {
+                    _controller.loadMore();
+                  }
+                }
+
+                return false;
+              },
+              child: Scrollbar(
+                controller: _scrollController,
+                child: CustomScrollView(
+                  controller: _scrollController,
+                  slivers: [
+                    SliverPadding(
+                      padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),
+                      sliver: SliverList.builder(
+                        itemCount: _controller.logs.length,
+                        itemBuilder: (context, index) => LogEntryCard(
+                          log: _controller.logs[index],
+                        ),
+                      ),
+                    ),
+                    if (_controller.isFetchingMore)
+                      const SliverToBoxAdapter(
+                        child: Padding(
+                          padding: EdgeInsets.all(16),
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            );
+          }
+        },
+      ),
+    );
+  }
+}
+
+class _FilterBar extends StatelessWidget {
+  const _FilterBar({
+    // ignore: unused_element
+    super.key,
+    required this.controller,
+  });
+
+  final LogViewController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: controller,
+      builder: (context, _) => ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        scrollDirection: Axis.horizontal,
+        children: [
+          FilterSelectionChip<LogLevel>(
+            values: controller.usedLevel,
+            selectedValues: controller.filterLevels,
+            onSelect: (values) {
+              controller.filterLevels = values;
+            },
+            filterSelectionItemLabelBuilder: (value) => switch (value) {
+              LogLevel.trace => 'Trace',
+              LogLevel.debug => 'Debug',
+              LogLevel.info => 'Info',
+              LogLevel.warning => 'Warning',
+              LogLevel.error => 'Error',
+              LogLevel.fatal => 'Fatal',
+            },
+            filterSelectedValuesLabelBuilder: (values) => switch (values) {
+              [] => 'All levels',
+              [final value] => value.name,
+              [final first, final second, ...] =>
+                '${first.name}, ${second.name} ...',
+            },
+          ),
+          const SizedBox(width: 8),
+          FilterSelectionChip<String>(
+            values: controller.usedTags,
+            selectedValues: controller.filterTags,
+            onSelect: (values) {
+              controller.filterTags = values;
+            },
+            filterSelectionItemLabelBuilder: (value) => value,
+            filterSelectedValuesLabelBuilder: (values) => switch (values) {
+              [] => 'All tags',
+              [final value] => value,
+              [final first, final second, ...] => '$first, $second ...',
+            },
+          ),
+          const SizedBox(width: 8),
+          FilterSelectionChip<String>(
+            values: controller.usedClassnames,
+            selectedValues: controller.filterClassnames,
+            onSelect: (values) {
+              controller.filterClassnames = values;
+            },
+            filterSelectionItemLabelBuilder: (value) => value,
+            filterSelectedValuesLabelBuilder: (values) => switch (values) {
+              [] => 'All classes',
+              [final value] => value,
+              [final first, final second, ...] => '$first, $second ...',
+            },
+          ),
+          const SizedBox(width: 8),
+          TimespanFilterChip(
+            startDate: controller.filterStartDate,
+            endDate: controller.filterEndDate,
+            onSelect: (value) {
+              controller.setTimespanFilter(value.$1, value.$2);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}

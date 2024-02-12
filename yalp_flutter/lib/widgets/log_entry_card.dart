@@ -1,56 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:date_format/date_format.dart';
+
 import 'package:yalp_core/yalp_core.dart';
 
-class MaterialLogViewer extends StatefulWidget {
-  const MaterialLogViewer({super.key});
-
-  @override
-  State<MaterialLogViewer> createState() => _MaterialLogViewerState();
-}
-
-class _MaterialLogViewerState extends State<MaterialLogViewer> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Log Viewer'),
-      ),
-      body: FutureBuilder(
-        future: Logger.root.logStorage.getAllLogs(),
-        initialData: const <LogEntry>[],
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final logs = snapshot.data as List<LogEntry>;
-
-            if (logs.isEmpty) {
-              return const Center(
-                child: Text('No logs found'),
-              );
-            }
-
-            return ListView.builder(
-              itemCount: logs.length,
-              itemBuilder: (context, index) => _LogEntryCard(log: logs[index]),
-            );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text('Error: ${snapshot.error}'),
-            );
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
-      ),
-    );
-  }
-}
-
-class _LogEntryCard extends StatelessWidget {
-  const _LogEntryCard({
+class LogEntryCard extends StatelessWidget {
+  const LogEntryCard({
     super.key,
     required this.log,
   });
@@ -125,7 +80,7 @@ class _LogEntryCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
                 child: Text(
-                  '$stacktrace',
+                  '$stacktrace'.trimRight(),
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         fontFamily: 'monospace',
                       ),
@@ -143,6 +98,7 @@ class _Tag extends StatelessWidget {
   final Color color;
 
   const _Tag({
+    // ignore: unused_element
     super.key,
     required this.value,
     this.color = Colors.blueAccent,
