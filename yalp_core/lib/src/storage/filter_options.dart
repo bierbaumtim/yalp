@@ -5,6 +5,7 @@ class LogFilterOptions {
   final DateTime? end;
   final List<String> tags;
   final List<LogLevel> level;
+  final List<String> classnames;
   final String? invocation;
   final int? offset;
   final int? limit;
@@ -14,6 +15,7 @@ class LogFilterOptions {
     this.end,
     this.tags = const <String>[],
     this.level = const <LogLevel>[],
+    this.classnames = const <String>[],
     this.invocation,
     this.offset,
     this.limit,

@@ -10,6 +10,7 @@ abstract interface class ILogStorage {
 
   Future<List<String>> getTags();
   Future<List<LogLevel>> getLevels();
+  Future<List<String>> getClassnames();
   Future<List<LogEntry>> getAllLogs();
   Future<List<LogEntry>> getLogsFiltered(LogFilterOptions options);
 

@@ -45,6 +45,11 @@ class InMemoryStorage implements ILogStorage {
         return false;
       }
 
+      if (options.classnames.isNotEmpty &&
+          !options.classnames.contains(log.className)) {
+        return false;
+      }
+
       if (options.start != null && log.timestamp.isBefore(options.start!)) {
         return false;
       }
@@ -74,6 +79,10 @@ class InMemoryStorage implements ILogStorage {
   @override
   Future<List<LogLevel>> getLevels() async =>
       _logs.map<LogLevel>((log) => log.level).toSet().toList();
+
+  @override
+  Future<List<String>> getClassnames() async =>
+      _logs.map<String>((log) => log.className).toSet().toList();
 
   @override
   Future<void> writeLog(LogEntry logEntry) async {

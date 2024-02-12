@@ -63,6 +63,13 @@ class IsarLogStorage implements ILogStorage {
       _db.logEntries.where().distinctByLevel().levelProperty().findAll();
 
   @override
+  Future<List<String>> getClassnames() => _db.logEntries
+      .where()
+      .distinctByClassName()
+      .classNameProperty()
+      .findAll();
+
+  @override
   Future<List<LogEntry>> getAllLogs() async {
     final entities =
         await _db.logEntries.where().sortByTimestampDesc().findAll();
@@ -95,6 +102,19 @@ class IsarLogStorage implements ILogStorage {
 
             for (final level in options.level.skip(1)) {
               query = query.or().levelEqualTo(level);
+            }
+
+            return query;
+          }),
+        )
+        .and()
+        .optional(
+          options.classnames.isNotEmpty,
+          (q) => q.group((q) {
+            var query = q.classNameEqualTo(options.classnames.first);
+
+            for (final classname in options.classnames.skip(1)) {
+              query = query.or().classNameEqualTo(classname);
             }
 
             return query;
