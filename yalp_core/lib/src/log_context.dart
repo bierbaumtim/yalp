@@ -43,14 +43,15 @@ class LogContext {
     );
   }
 
+  @pragma('vm:prefer-inline')
   static (String, String) _getClassNameAndFunctionName(
     String? className,
     String? functionName,
   ) {
     return switch ((className, functionName)) {
-      (var cn?, var fn?) => (cn, fn),
-      (var cn?, _) => (cn, ''),
-      (_, var fn?) => ('', fn),
+      (final cn?, final fn?) => (cn, fn),
+      (final cn?, _) => (cn, ''),
+      (_, final fn?) => ('', fn),
       _ => extractClassAndFunctionFromStacktrace(StackTrace.current),
     };
   }

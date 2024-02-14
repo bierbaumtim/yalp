@@ -1,5 +1,6 @@
 import 'package:stack_trace/stack_trace.dart';
 
+@pragma('vm:prefer-inline')
 (String, String) extractClassAndFunctionFromStacktrace(StackTrace stackTrace) {
   final trace = Trace.from(stackTrace);
 
@@ -9,11 +10,11 @@ import 'package:stack_trace/stack_trace.dart';
 
   return switch (memberParts) {
     [] => ('', ''),
-    [var element] => ('', element),
-    [var topLevel, ..., '<fn>'] => (
+    [final element] => ('', element),
+    [final topLevel, ..., '<fn>'] => (
         frame?.uri.pathSegments.lastOrNull ?? '',
         topLevel
       ),
-    [var first, ..., var last] => (first, last),
+    [final first, ..., final last] => (first, last),
   };
 }
