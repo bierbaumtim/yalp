@@ -53,12 +53,12 @@ class LogEntryCard extends StatelessWidget {
                 spacing: 8,
                 runSpacing: 8,
                 children: [
-                  if (log.tag case var tag?) _Tag(value: tag),
+                  if (log.tag case final tag?) _Tag(value: tag),
                   _Tag(
                     value: '${log.className}.${log.functionName}',
                     color: Colors.lightBlueAccent,
                   ),
-                  if (log.invocation case var invocation?)
+                  if (log.invocation case final invocation?)
                     _Tag(value: invocation, color: Colors.pinkAccent),
                 ],
               ),

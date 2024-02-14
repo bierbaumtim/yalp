@@ -39,6 +39,7 @@ class FilterSelectionChip<T> extends StatelessWidget {
       onSelected: (value) async {
         final result = await showModalBottomSheet<List<T>>(
           context: context,
+          showDragHandle: true,
           builder: (context) => _FilterMenuSelectionBottomsheet<T>(
             values: values,
             selectedValues: selectedValues,
@@ -88,22 +89,6 @@ class _FilterMenuSelectionBottomsheetState<T>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 22),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSurfaceVariant
-                      .withOpacity(0.4),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                height: 4,
-                width: 32,
-              ),
-            ),
-          ),
           Expanded(
             child: ListView(
               children: [

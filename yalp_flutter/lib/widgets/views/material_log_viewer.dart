@@ -41,6 +41,23 @@ class _MaterialLogViewerState extends State<MaterialLogViewer> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Log Viewer'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () => _controller.loadLogs(),
+          ),
+          IconButton(
+            icon: const Icon(Icons.bar_chart_rounded),
+            onPressed: () => showModalBottomSheet(
+              context: context,
+              showDragHandle: true,
+              enableDrag: true,
+              builder: (context) => _LogStatsBottomsheet(
+                controller: _controller,
+              ),
+            ),
+          ),
+        ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(48),
           child: SizedBox(
@@ -183,6 +200,68 @@ class _FilterBar extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _LogStatsBottomsheet extends StatelessWidget {
+  final LogViewController controller;
+
+  const _LogStatsBottomsheet({
+    // ignore: unused_element
+    super.key,
+    required this.controller,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<LogStatistics>(
+      future: controller.getStats(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text('Error: ${snapshot.error}'),
+          );
+        } else if (!snapshot.hasData) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        return ListView(
+          children: [
+            ListTile(
+              title: const Text('Log count'),
+              trailing: Text('${snapshot.data!.logCount}'),
+            ),
+            const Divider(indent: 8, endIndent: 8),
+            ListTile(
+              title: const Text('Trace count'),
+              trailing: Text('${snapshot.data!.traceCount}'),
+            ),
+            ListTile(
+              title: const Text('Debug count'),
+              trailing: Text('${snapshot.data!.debugCount}'),
+            ),
+            ListTile(
+              title: const Text('Info count'),
+              trailing: Text('${snapshot.data!.infoCount}'),
+            ),
+            ListTile(
+              title: const Text('Warning count'),
+              trailing: Text('${snapshot.data!.warningCount}'),
+            ),
+            ListTile(
+              title: const Text('Error count'),
+              trailing: Text('${snapshot.data!.errorCount}'),
+            ),
+            ListTile(
+              title: const Text('Fatal count'),
+              trailing: Text('${snapshot.data!.fatalCount}'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

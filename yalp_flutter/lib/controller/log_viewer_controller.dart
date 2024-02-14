@@ -115,6 +115,8 @@ class LogViewController extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<LogStatistics> getStats() => Logger.root.logStorage.getStatistics();
+
   Future<void> _refetchLogs() async {
     _isLoading = true;
     notifyListeners();
