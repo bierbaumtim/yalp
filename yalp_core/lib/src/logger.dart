@@ -13,6 +13,8 @@ class Logger extends _BaseLogger {
 class RootLogger extends _BaseLogger {
   late ILogStorage _logStorage;
 
+  LogLevel minStorageLevel = LogLevel.trace;
+
   RootLogger._();
 
   ILogStorage get logStorage => _logStorage;
@@ -30,6 +32,7 @@ sealed class _BaseLogger {
 
   void trace(
     String message, {
+    Object? error,
     StackTrace? stackTrace,
     String? tag,
     LogContext? context,
@@ -37,7 +40,7 @@ sealed class _BaseLogger {
     _log(
       message,
       DateTime.now(),
-      null,
+      error,
       stackTrace,
       LogLevel.trace,
       tag,
@@ -47,6 +50,7 @@ sealed class _BaseLogger {
 
   void debug(
     String message, {
+    Object? error,
     StackTrace? stackTrace,
     String? tag,
     LogContext? context,
@@ -54,7 +58,7 @@ sealed class _BaseLogger {
     _log(
       message,
       DateTime.now(),
-      null,
+      error,
       stackTrace,
       LogLevel.debug,
       tag,
@@ -64,6 +68,7 @@ sealed class _BaseLogger {
 
   void info(
     String message, {
+    Object? error,
     StackTrace? stackTrace,
     String? tag,
     LogContext? context,
@@ -71,7 +76,7 @@ sealed class _BaseLogger {
     _log(
       message,
       DateTime.now(),
-      null,
+      error,
       stackTrace,
       LogLevel.info,
       tag,
@@ -81,6 +86,7 @@ sealed class _BaseLogger {
 
   void warning(
     String message, {
+    Object? error,
     StackTrace? stackTrace,
     String? tag,
     LogContext? context,
@@ -88,7 +94,7 @@ sealed class _BaseLogger {
     _log(
       message,
       DateTime.now(),
-      null,
+      error,
       stackTrace ?? Trace.current(1).vmTrace,
       LogLevel.warning,
       tag,
@@ -142,8 +148,12 @@ sealed class _BaseLogger {
     String? tag,
     LogContext? context,
   ) {
+    if (level.index < root.minStorageLevel.index) {
+      return;
+    }
+
     final (className, functionName) = switch (context) {
-      var ctx? => (ctx.className, ctx.functionName),
+      final ctx? => (ctx.className, ctx.functionName),
       _ => extractClassAndFunctionFromStacktrace(
           stackTrace ?? StackTrace.current,
         ),
