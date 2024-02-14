@@ -1,5 +1,6 @@
 import '../log_entry.dart';
 import 'filter_options.dart';
+import 'log_statistics.dart';
 import 'log_storage_interface.dart';
 import 'retention_policy.dart';
 
@@ -7,10 +8,14 @@ class InMemoryStorage implements ILogStorage {
   final List<LogEntry> _logs = [];
 
   @override
-  Future<void> init() async {}
+  Future<void> init() async {
+    _logs.clear();
+  }
 
   @override
-  Future<void> dispose() async {}
+  Future<void> dispose() async {
+    _logs.clear();
+  }
 
   @override
   Future<void> applyRetentionPolicy(RetentionPolicy policy) async {
@@ -83,6 +88,48 @@ class InMemoryStorage implements ILogStorage {
   @override
   Future<List<String>> getClassnames() async =>
       _logs.map<String>((log) => log.className).toSet().toList();
+
+  @override
+  Future<LogStatistics> getStatistics() async {
+    var traceCount = 0;
+    var debugCount = 0;
+    var infoCount = 0;
+    var warningCount = 0;
+    var errorCount = 0;
+    var fatalCount = 0;
+
+    for (final log in _logs) {
+      switch (log.level) {
+        case LogLevel.trace:
+          traceCount++;
+          break;
+        case LogLevel.debug:
+          debugCount++;
+          break;
+        case LogLevel.info:
+          infoCount++;
+          break;
+        case LogLevel.warning:
+          warningCount++;
+          break;
+        case LogLevel.error:
+          errorCount++;
+          break;
+        case LogLevel.fatal:
+          fatalCount++;
+          break;
+      }
+    }
+
+    return LogStatistics(
+      traceCount: traceCount,
+      debugCount: debugCount,
+      infoCount: infoCount,
+      warningCount: warningCount,
+      errorCount: errorCount,
+      fatalCount: fatalCount,
+    );
+  }
 
   @override
   Future<void> writeLog(LogEntry logEntry) async {

@@ -144,6 +144,50 @@ class IsarLogStorage implements ILogStorage {
   }
 
   @override
+  Future<LogStatistics> getStatistics() async {
+    var traceCount = 0;
+    var debugCount = 0;
+    var infoCount = 0;
+    var warningCount = 0;
+    var errorCount = 0;
+    var fatalCount = 0;
+
+    final logs = await _db.logEntries.where().levelProperty().findAll();
+
+    for (final log in logs) {
+      switch (log) {
+        case LogLevel.trace:
+          traceCount++;
+          break;
+        case LogLevel.debug:
+          debugCount++;
+          break;
+        case LogLevel.info:
+          infoCount++;
+          break;
+        case LogLevel.warning:
+          warningCount++;
+          break;
+        case LogLevel.error:
+          errorCount++;
+          break;
+        case LogLevel.fatal:
+          fatalCount++;
+          break;
+      }
+    }
+
+    return LogStatistics(
+      traceCount: traceCount,
+      debugCount: debugCount,
+      infoCount: infoCount,
+      warningCount: warningCount,
+      errorCount: errorCount,
+      fatalCount: fatalCount,
+    );
+  }
+
+  @override
   Future<void> writeLog(LogEntry logEntry) async {
     final entity = LogEntryEntity(
       message: logEntry.message,
