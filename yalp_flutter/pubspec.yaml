@@ -15,7 +15,10 @@ dependencies:
 
   date_format: ^2.0.7
   yalp_core:
-    path: ../yalp_core
+    # path: ../yalp_core
+    git: 
+      url: https://github.com/bierbaumtim/yalp.git
+      path: yalp_core
 
 dev_dependencies:
   flutter_test:

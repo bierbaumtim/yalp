@@ -15,7 +15,10 @@ dependencies:
   path_provider: ^2.1.2
 
   yalp_core:
-    path: ../yalp_core
+    # path: ../yalp_core
+    git: 
+      url: https://github.com/bierbaumtim/yalp.git
+      path: yalp_core
 
 dev_dependencies:
   build_runner: ^2.4.8
