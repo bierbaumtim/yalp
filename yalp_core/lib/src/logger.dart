@@ -159,6 +159,11 @@ sealed class _BaseLogger {
         ),
     };
 
+    final (invocation, parentInvocation) = switch (context) {
+      TrackedLogContext ctx => (ctx.invocation, ctx.parentInvocation),
+      _ => (null, null),
+    };
+
     final entry = LogEntry(
       message: message,
       timestamp: timestamp,
@@ -168,7 +173,8 @@ sealed class _BaseLogger {
       tag: tag,
       className: className,
       functionName: functionName,
-      invocation: context?.invocation,
+      invocation: invocation,
+      parentInvocation: parentInvocation,
     );
 
     root._logStorage.writeLog(entry);

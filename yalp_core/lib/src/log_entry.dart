@@ -10,6 +10,7 @@ class LogEntry {
   final String className;
   final String functionName;
   final String? invocation;
+  final String? parentInvocation;
 
   const LogEntry({
     required this.message,
@@ -21,10 +22,22 @@ class LogEntry {
     this.stackTrace,
     this.tag,
     this.invocation,
+    this.parentInvocation,
   });
 
   @override
   String toString() {
-    return 'LogEntry{message: $message, timestamp: $timestamp, error: $error, stackTrace: $stackTrace, level: $level, tag: $tag, className: $className, functionName: $functionName, invocation: $invocation}';
+    return 'LogEntry{'
+        'message: $message, '
+        'timestamp: $timestamp, '
+        'error: $error, '
+        'stackTrace: $stackTrace, '
+        'level: $level, '
+        'tag: $tag, '
+        'className: $className, '
+        'functionName: $functionName, '
+        'invocation: $invocation, '
+        'parentInvocation: $parentInvocation'
+        '}';
   }
 }
