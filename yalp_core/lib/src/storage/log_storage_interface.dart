@@ -14,6 +14,7 @@ abstract interface class ILogStorage {
   Future<List<String>> getClassnames();
   Future<List<LogEntry>> getAllLogs();
   Future<List<LogEntry>> getLogsFiltered(LogFilterOptions options);
+  Future<List<LogEntry>> getLogsForInvocation(String invocation);
 
   Future<LogStatistics> getStatistics();
 

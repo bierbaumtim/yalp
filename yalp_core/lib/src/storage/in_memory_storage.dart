@@ -73,6 +73,45 @@ class InMemoryStorage implements ILogStorage {
   }
 
   @override
+  Future<List<LogEntry>> getLogsForInvocation(String invocation) async {
+    final result = <LogEntry>[];
+
+    final iter = _logs.where((log) => log.invocation == invocation);
+    final handledNestedInvocations = <String>{};
+
+    for (final log in iter) {
+      if (!handledNestedInvocations.contains(log.invocation)) {
+        result.addAll(_getNestedLogs(log.invocation!));
+        handledNestedInvocations.add(log.invocation!);
+      }
+
+      result.add(log);
+    }
+
+    result.sort((a, b) => b.timestamp.compareTo(a.timestamp));
+
+    return result;
+  }
+
+  List<LogEntry> _getNestedLogs(String invocation) {
+    final result = <LogEntry>[];
+
+    final iter = _logs.where((log) => log.parentInvocation == invocation);
+    final handledNestedInvocations = <String>{};
+
+    for (final log in iter) {
+      if (!handledNestedInvocations.contains(log.invocation)) {
+        result.addAll(_getNestedLogs(log.invocation!));
+        handledNestedInvocations.add(log.invocation!);
+      }
+
+      result.add(log);
+    }
+
+    return result;
+  }
+
+  @override
   Future<List<String>> getTags() async => _logs
       .where(
         (log) => log.tag != null,
