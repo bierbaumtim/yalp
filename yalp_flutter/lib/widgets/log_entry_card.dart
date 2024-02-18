@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:date_format/date_format.dart';
-
 import 'package:yalp_core/yalp_core.dart';
+
+import 'tag.dart';
+import 'views/log_entry_page.dart';
 
 class LogEntryCard extends StatelessWidget {
   const LogEntryCard({
@@ -14,10 +16,16 @@ class LogEntryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Card(
       clipBehavior: Clip.antiAlias,
       child: InkWell(
-        onTap: () {},
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute<void>(
+            builder: (context) => LogEntryPage(entry: log),
+          ),
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -34,7 +42,7 @@ class LogEntryCard extends StatelessWidget {
                   ],
                 ),
               ),
-              trailing: _Tag(
+              trailing: Tag(
                 color: switch (log.level) {
                   LogLevel.trace => Colors.grey,
                   LogLevel.debug => Colors.blue,
@@ -53,13 +61,13 @@ class LogEntryCard extends StatelessWidget {
                 spacing: 8,
                 runSpacing: 8,
                 children: [
-                  if (log.tag case final tag?) _Tag(value: tag),
-                  _Tag(
+                  if (log.tag case final tag?) Tag(value: tag),
+                  Tag(
                     value: '${log.className}.${log.functionName}',
                     color: Colors.lightBlueAccent,
                   ),
                   if (log.invocation case final invocation?)
-                    _Tag(value: invocation, color: Colors.pinkAccent),
+                    Tag(value: invocation, color: Colors.pinkAccent),
                 ],
               ),
             ),
@@ -68,9 +76,9 @@ class LogEntryCard extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
                 child: Text(
                   '$error',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontFamily: 'monospace',
-                      ),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontFamily: 'monospace',
+                  ),
                 ),
               ),
             if (log.stackTrace case final stacktrace?
@@ -81,44 +89,12 @@ class LogEntryCard extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
                 child: Text(
                   '$stacktrace'.trimRight(),
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontFamily: 'monospace',
-                      ),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontFamily: 'monospace',
+                  ),
                 ),
               ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _Tag extends StatelessWidget {
-  final String value;
-  final Color color;
-
-  const _Tag({
-    // ignore: unused_element
-    super.key,
-    required this.value,
-    this.color = Colors.blueAccent,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 8,
-        vertical: 4,
-      ),
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Text(
-        value,
-        style: const TextStyle(
-          color: Colors.white,
         ),
       ),
     );
