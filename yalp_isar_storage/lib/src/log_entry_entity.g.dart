@@ -48,18 +48,23 @@ const LogEntryEntitySchema = CollectionSchema(
       name: r'message',
       type: IsarType.string,
     ),
-    r'stackTrace': PropertySchema(
+    r'parentInvocation': PropertySchema(
       id: 6,
+      name: r'parentInvocation',
+      type: IsarType.string,
+    ),
+    r'stackTrace': PropertySchema(
+      id: 7,
       name: r'stackTrace',
       type: IsarType.string,
     ),
     r'tag': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'tag',
       type: IsarType.string,
     ),
     r'timestamp': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'timestamp',
       type: IsarType.dateTime,
     )
@@ -140,6 +145,12 @@ int _logEntryEntityEstimateSize(
   }
   bytesCount += 3 + object.message.length * 3;
   {
+    final value = object.parentInvocation;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.stackTrace;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -166,9 +177,10 @@ void _logEntryEntitySerialize(
   writer.writeString(offsets[3], object.invocation);
   writer.writeByte(offsets[4], object.level.index);
   writer.writeString(offsets[5], object.message);
-  writer.writeString(offsets[6], object.stackTrace);
-  writer.writeString(offsets[7], object.tag);
-  writer.writeDateTime(offsets[8], object.timestamp);
+  writer.writeString(offsets[6], object.parentInvocation);
+  writer.writeString(offsets[7], object.stackTrace);
+  writer.writeString(offsets[8], object.tag);
+  writer.writeDateTime(offsets[9], object.timestamp);
 }
 
 LogEntryEntity _logEntryEntityDeserialize(
@@ -187,9 +199,10 @@ LogEntryEntity _logEntryEntityDeserialize(
         _LogEntryEntitylevelValueEnumMap[reader.readByteOrNull(offsets[4])] ??
             LogLevel.trace,
     message: reader.readString(offsets[5]),
-    stackTrace: reader.readStringOrNull(offsets[6]),
-    tag: reader.readStringOrNull(offsets[7]),
-    timestamp: reader.readDateTime(offsets[8]),
+    parentInvocation: reader.readStringOrNull(offsets[6]),
+    stackTrace: reader.readStringOrNull(offsets[7]),
+    tag: reader.readStringOrNull(offsets[8]),
+    timestamp: reader.readDateTime(offsets[9]),
   );
   return object;
 }
@@ -219,6 +232,8 @@ P _logEntryEntityDeserializeProp<P>(
     case 7:
       return (reader.readStringOrNull(offset)) as P;
     case 8:
+      return (reader.readStringOrNull(offset)) as P;
+    case 9:
       return (reader.readDateTime(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1416,6 +1431,160 @@ extension LogEntryEntityQueryFilter
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+      parentInvocationIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'parentInvocation',
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+      parentInvocationIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'parentInvocation',
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+      parentInvocationEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'parentInvocation',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+      parentInvocationGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'parentInvocation',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+      parentInvocationLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'parentInvocation',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+      parentInvocationBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'parentInvocation',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+      parentInvocationStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'parentInvocation',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+      parentInvocationEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'parentInvocation',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+      parentInvocationContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'parentInvocation',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+      parentInvocationMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'parentInvocation',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+      parentInvocationIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'parentInvocation',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+      parentInvocationIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'parentInvocation',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
       stackTraceIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -1867,6 +2036,20 @@ extension LogEntryEntityQuerySortBy
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy>
+      sortByParentInvocation() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'parentInvocation', Sort.asc);
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy>
+      sortByParentInvocationDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'parentInvocation', Sort.desc);
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy>
       sortByStackTrace() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'stackTrace', Sort.asc);
@@ -1999,6 +2182,20 @@ extension LogEntryEntityQuerySortThenBy
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy>
+      thenByParentInvocation() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'parentInvocation', Sort.asc);
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy>
+      thenByParentInvocationDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'parentInvocation', Sort.desc);
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy>
       thenByStackTrace() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'stackTrace', Sort.asc);
@@ -2081,6 +2278,14 @@ extension LogEntryEntityQueryWhereDistinct
     });
   }
 
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QDistinct>
+      distinctByParentInvocation({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'parentInvocation',
+          caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<LogEntryEntity, LogEntryEntity, QDistinct> distinctByStackTrace(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -2145,6 +2350,13 @@ extension LogEntryEntityQueryProperty
   QueryBuilder<LogEntryEntity, String, QQueryOperations> messageProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'message');
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, String?, QQueryOperations>
+      parentInvocationProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'parentInvocation');
     });
   }
 

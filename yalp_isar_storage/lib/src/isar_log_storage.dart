@@ -144,6 +144,45 @@ class IsarLogStorage implements ILogStorage {
   }
 
   @override
+  Future<List<LogEntry>> getLogsForInvocation(String invocation) async {
+    final entities = await _db.logEntries
+        .where()
+        .invocationEqualTo(invocation)
+        .sortByTimestampDesc()
+        .findAll();
+
+    final result = entities.map(_fromEntity).toList();
+
+    result.addAll(await _getNestedLogs(invocation));
+
+    result.sort((a, b) => b.timestamp.compareTo(a.timestamp));
+
+    return result;
+  }
+
+  Future<List<LogEntry>> _getNestedLogs(String invocation) async {
+    final result = <LogEntry>[];
+    final handledNestedInvocations = <String>{};
+
+    final entities = await _db.logEntries
+        .filter()
+        .parentInvocationEqualTo(invocation)
+        .sortByTimestampDesc()
+        .findAll();
+
+    for (final entity in entities) {
+      if (!handledNestedInvocations.contains(entity.invocation)) {
+        result.addAll(await _getNestedLogs(entity.invocation!));
+        handledNestedInvocations.add(entity.invocation!);
+      }
+
+      result.add(_fromEntity(entity));
+    }
+
+    return result;
+  }
+
+  @override
   Future<LogStatistics> getStatistics() async {
     var traceCount = 0;
     var debugCount = 0;
@@ -197,6 +236,7 @@ class IsarLogStorage implements ILogStorage {
       className: logEntry.className,
       functionName: logEntry.functionName,
       invocation: logEntry.invocation,
+      parentInvocation: logEntry.parentInvocation,
       stackTrace: logEntry.stackTrace?.toString(),
       error: logEntry.error?.toString(),
     );

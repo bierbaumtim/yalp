@@ -14,7 +14,7 @@ class LogEntryEntity {
   @Index()
   @enumerated
   final LogLevel level;
-  
+
   @Index()
   final String? tag;
   final String className;
@@ -22,6 +22,7 @@ class LogEntryEntity {
 
   @Index()
   final String? invocation;
+  final String? parentInvocation;
 
   final String? stackTrace;
   final String? error;
@@ -35,6 +36,7 @@ class LogEntryEntity {
     required this.className,
     required this.functionName,
     required this.invocation,
+    required this.parentInvocation,
     required this.stackTrace,
     required this.error,
   });
