@@ -19,19 +19,26 @@ class LogEntryPage extends StatefulWidget {
   State<LogEntryPage> createState() => _LogEntryPageState();
 }
 
-class _LogEntryPageState extends State<LogEntryPage> {
+class _LogEntryPageState extends State<LogEntryPage>
+    with SingleTickerProviderStateMixin {
   late final LogEntryPageController _controller;
+  late final TabController _tabController;
 
   @override
   void initState() {
     super.initState();
 
     _controller = LogEntryPageController(entry: widget.entry);
+    _tabController = TabController(
+      length: 2,
+      vsync: this,
+    );
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _tabController.dispose();
 
     super.dispose();
   }
@@ -41,14 +48,16 @@ class _LogEntryPageState extends State<LogEntryPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Details'),
-        bottom: const TabBar(
-          tabs: [
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: const [
             Tab(text: 'Details'),
             Tab(text: 'Connected Logs'),
           ],
         ),
       ),
       body: TabBarView(
+        controller: _tabController,
         children: [
           _LogEntryDetails(
             controller: _controller,
