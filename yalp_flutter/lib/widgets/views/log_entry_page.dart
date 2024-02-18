@@ -89,7 +89,12 @@ class _LogEntryDetails extends StatelessWidget {
         const ListTile(
           title: Text('Message'),
         ),
-        Text(controller.entry.message),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+          child: Text(
+            controller.entry.message,
+          ),
+        ),
         ListTile(
           title: const Text('Level'),
           trailing: Tag(
@@ -135,7 +140,10 @@ class _LogEntryDetails extends StatelessWidget {
             title: const Text('Invocation'),
             trailing: Tag(value: invocation, color: Colors.pinkAccent),
           ),
-        if (controller.entry.error case final error)
+        if (controller.entry.error case final error) ...[
+          const ListTile(
+            title: Text('Error'),
+          ),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
             child: Text(
@@ -145,7 +153,11 @@ class _LogEntryDetails extends StatelessWidget {
               ),
             ),
           ),
-        if (controller.entry.stackTrace case final stacktrace)
+        ],
+        if (controller.entry.stackTrace case final stacktrace) ...[
+          const ListTile(
+            title: Text('Stacktrace'),
+          ),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
             child: Text(
@@ -155,6 +167,7 @@ class _LogEntryDetails extends StatelessWidget {
               ),
             ),
           ),
+        ],
       ],
     );
   }
