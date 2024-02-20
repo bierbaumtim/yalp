@@ -66,4 +66,37 @@ Each log method accepts the following optional arguments:
 
 The base `LogContext` gives you the option to specify the `className` and `functionName` which should be saved in the log. If none is provided both names are extracted from the stackTrace.
 
-The more interesting `LogContext` is the `TrackedLogContext` which enables you to group and associate logs. Every time you create a new `TrackedLogContext` a new v4 UUID is generated and stored in the context and later also each log entry itself. 
+The more interesting `LogContext` is the `TrackedLogContext` which enables you to group and associate logs. Every time you create a new `TrackedLogContext` a new v4 UUID is generated and stored in the context and later also in each log entry itself. 
+
+Each `TrackedLogContext` can also have a parent `TrackedLogContext`. This enables you to group logs with arbitrary nesting. This is pretty usefull when logging parallel methods.
+
+```dart
+final logger = Logger();
+
+// Uses current stacktrace to extract class and function name 
+final lc1 = LogContext();
+logger.info('Something happend', context: lc1);
+
+// Class and function names are provided in the constructor
+final lc2 = LogContext(className: 'Test', functionName: 'run');
+final logger.info('Something happend', context: lc2);
+
+// Single tracked context
+final lc3 = LogContext.tracked();
+logger.info('Something happend', context: lc3);
+logger.warning('Something could be wrong here', context: lc3);
+
+// Nested tracked contexts
+final lc4 = LogContext.tracked();
+
+logger.info('Something happend', context: lc4);
+
+final lc5 = lc4.nested();
+logger.warning('Something does not look right', context: lc5);
+
+logger.fatal('Oh no its crashed', context: lc4);
+
+```
+
+### UI
+To show the logs you simple import `yalp_flutter` and use the `MaterialLogViewer` widget (`CupertinoLogViewer` coming soon...).
