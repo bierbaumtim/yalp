@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:yalp_core/yalp_core.dart';
 
 import '../../controller/log_viewer_controller.dart';
-import '../filter_selection_chip.dart';
-import '../log_entry_card.dart';
-import '../timespan_filter_chip.dart';
+import 'filter_selection_chip.dart';
+import 'log_entry_card.dart';
+import 'timespan_filter_chip.dart';
 
 class MaterialLogViewer extends StatefulWidget {
   const MaterialLogViewer({super.key});

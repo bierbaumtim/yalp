@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:date_format/date_format.dart';
 import 'package:yalp_core/yalp_core.dart';
 
-import 'tag.dart';
-import 'views/log_entry_page.dart';
+import '../tag.dart';
+import 'log_entry_page.dart';
 
 class LogEntryCard extends StatelessWidget {
   const LogEntryCard({

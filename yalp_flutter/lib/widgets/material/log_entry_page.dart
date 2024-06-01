@@ -4,7 +4,7 @@ import 'package:date_format/date_format.dart';
 import 'package:yalp_core/yalp_core.dart';
 
 import '../../controller/log_entry_page_controller.dart';
-import '../log_entry_card.dart';
+import 'log_entry_card.dart';
 import '../tag.dart';
 
 class LogEntryPage extends StatefulWidget {
