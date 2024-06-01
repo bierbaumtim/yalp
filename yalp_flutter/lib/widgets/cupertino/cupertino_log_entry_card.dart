@@ -26,6 +26,7 @@ class CupertinoLogEntryCard extends StatelessWidget {
         child: GestureDetector(
           onTap: () => Navigator.of(context).push(
             CupertinoPageRoute<void>(
+              title: 'Log Viewer',
               builder: (context) => CupertinoLogEntryPage(entry: log),
             ),
           ),
@@ -38,16 +39,14 @@ class CupertinoLogEntryCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.all(4),
                   child: Text(
                     log.message,
                     style: theme.textTheme.textStyle,
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.all(4),
                   child: Row(
                     children: [
                       Text(
@@ -67,14 +66,18 @@ class CupertinoLogEntryCard extends StatelessWidget {
                         style: theme.textTheme.textStyle.copyWith(
                           color: CupertinoColors.secondaryLabel
                               .resolveFrom(context),
+                          fontSize: switch (
+                              theme.textTheme.textStyle.fontSize) {
+                            final fontsize? => fontsize - 2,
+                            _ => null,
+                          },
                         ),
                       ),
                     ],
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.all(4),
                   child: Row(
                     children: [
                       Text(
@@ -98,8 +101,7 @@ class CupertinoLogEntryCard extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.all(4),
                   child: Wrap(
                     spacing: 8,
                     runSpacing: 8,
@@ -120,8 +122,7 @@ class CupertinoLogEntryCard extends StatelessWidget {
                 ),
                 if (log.error case final error?)
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.all(4),
                     child: Text(
                       '$error',
                       style: theme.textTheme.textStyle.copyWith(
@@ -134,8 +135,7 @@ class CupertinoLogEntryCard extends StatelessWidget {
                         log.level == LogLevel.fatal ||
                         log.level == LogLevel.warning))
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.all(4),
                     child: Text(
                       '$stacktrace'.trimRight(),
                       style: theme.textTheme.textStyle.copyWith(

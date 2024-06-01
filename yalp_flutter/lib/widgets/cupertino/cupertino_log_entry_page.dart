@@ -190,7 +190,7 @@ class _LogEntryDetails extends StatelessWidget {
                   ],
                 ),
               ),
-            if (controller.entry.error case final error) ...[
+            if (controller.entry.error case final error?) ...[
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Text(
@@ -208,11 +208,11 @@ class _LogEntryDetails extends StatelessWidget {
                 ),
               ),
             ],
-            if (controller.entry.stackTrace case final stacktrace) ...[
+            if (controller.entry.stackTrace case final stacktrace?) ...[
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Text(
-                  'Stacktracr',
+                  'Stacktrace',
                   style: theme.textTheme.navTitleTextStyle,
                 ),
               ),
