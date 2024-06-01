@@ -73,29 +73,30 @@ class _LogEntryDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = CupertinoTheme.of(context);
 
-    return CupertinoTabView(
-      builder: (context) => CupertinoPageScaffold(
-        navigationBar: const CupertinoNavigationBar(
-          middle: Text('Details'),
-        ),
+    return CupertinoPageScaffold(
+      navigationBar: const CupertinoNavigationBar(
+        middle: Text('Details'),
+      ),
+      child: SafeArea(
         child: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+              padding: const EdgeInsets.only(bottom: 4),
               child: Text(
                 'Message',
                 style: theme.textTheme.navTitleTextStyle,
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+              padding: const EdgeInsets.symmetric(vertical: 4),
               child: Text(
                 controller.entry.message,
                 style: theme.textTheme.textStyle,
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.symmetric(vertical: 4),
               child: Row(
                 children: [
                   Text(
@@ -119,22 +120,31 @@ class _LogEntryDetails extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-              child: Text(
-                formatDate(
-                  controller.entry.timestamp,
-                  [
-                    ...[dd, '.', mm, '.', yyyy],
-                    ' - ',
-                    ...[HH, ':', nn, ':', ss, '.', SSS]
-                  ],
-                ),
-                style: theme.textTheme.textStyle,
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Row(
+                children: [
+                  Text(
+                    'Timestamp',
+                    style: theme.textTheme.textStyle,
+                  ),
+                  const Spacer(),
+                  Text(
+                    formatDate(
+                      controller.entry.timestamp,
+                      [
+                        ...[dd, '.', mm, '.', yyyy],
+                        ' - ',
+                        ...[HH, ':', nn, ':', ss, '.', SSS]
+                      ],
+                    ),
+                    style: theme.textTheme.textStyle,
+                  ),
+                ],
               ),
             ),
             if (controller.entry.tag case final tag?)
               Padding(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Row(
                   children: [
                     Text(
@@ -147,7 +157,7 @@ class _LogEntryDetails extends StatelessWidget {
                 ),
               ),
             Padding(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.symmetric(vertical: 4),
               child: Row(
                 children: [
                   Text(
@@ -165,7 +175,7 @@ class _LogEntryDetails extends StatelessWidget {
             ),
             if (controller.entry.invocation case final invocation?)
               Padding(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Row(
                   children: [
                     Text(
@@ -182,14 +192,14 @@ class _LogEntryDetails extends StatelessWidget {
               ),
             if (controller.entry.error case final error) ...[
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Text(
                   'Error',
                   style: theme.textTheme.navTitleTextStyle,
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Text(
                   '$error',
                   style: theme.textTheme.textStyle.copyWith(
@@ -200,14 +210,14 @@ class _LogEntryDetails extends StatelessWidget {
             ],
             if (controller.entry.stackTrace case final stacktrace) ...[
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Text(
                   'Stacktracr',
                   style: theme.textTheme.navTitleTextStyle,
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Text(
                   '$stacktrace'.trimRight(),
                   style: theme.textTheme.textStyle.copyWith(
@@ -234,17 +244,26 @@ class _ConnectedLogs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoTabView(
-      builder: (context) => CupertinoPageScaffold(
-        navigationBar: const CupertinoNavigationBar(
-          middle: Text('Connected Logs'),
-        ),
-        child: ListView.builder(
-          itemCount: controller.connectedLogs.length,
-          itemBuilder: (context, index) => CupertinoLogEntryCard(
-            log: controller.connectedLogs[index],
-          ),
-        ),
+    return CupertinoPageScaffold(
+      navigationBar: const CupertinoNavigationBar(
+        middle: Text('Connected Logs'),
+      ),
+      child: AnimatedBuilder(
+        animation: controller,
+        builder: (context, _) {
+          if (controller.isLoadingConnectedLogs) {
+            return const Center(
+              child: CupertinoActivityIndicator(),
+            );
+          }
+
+          return ListView.builder(
+            itemCount: controller.connectedLogs.length,
+            itemBuilder: (context, index) => CupertinoLogEntryCard(
+              log: controller.connectedLogs[index],
+            ),
+          );
+        },
       ),
     );
   }

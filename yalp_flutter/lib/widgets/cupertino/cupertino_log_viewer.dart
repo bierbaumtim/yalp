@@ -55,70 +55,72 @@ class _CupertinoLogViewerState extends State<CupertinoLogViewer> {
           ],
         ),
       ),
-      child: Column(
-        children: [
-          // TODO: Implement filter chips
-          const Row(
-            children: [],
-          ),
-          Expanded(
-            child: AnimatedBuilder(
-              animation: _controller,
-              builder: (context, _) {
-                if (_controller.isLoading) {
-                  return const Center(
-                    child: CupertinoActivityIndicator(),
-                  );
-                } else if (_controller.logs.isEmpty) {
-                  return const Center(
-                    child: Text('No logs found'),
-                  );
-                } else {
-                  return NotificationListener(
-                    onNotification: (notification) {
-                      if (notification is ScrollEndNotification) {
-                        if (notification.metrics.pixels >=
-                                notification.metrics.maxScrollExtent - 100 &&
-                            !_controller.isFetchingMore) {
-                          _controller.loadMore();
+      child: SafeArea(
+        child: Column(
+          children: [
+            // TODO: Implement filter chips
+            const Row(
+              children: [],
+            ),
+            Expanded(
+              child: AnimatedBuilder(
+                animation: _controller,
+                builder: (context, _) {
+                  if (_controller.isLoading) {
+                    return const Center(
+                      child: CupertinoActivityIndicator(),
+                    );
+                  } else if (_controller.logs.isEmpty) {
+                    return const Center(
+                      child: Text('No logs found'),
+                    );
+                  } else {
+                    return NotificationListener(
+                      onNotification: (notification) {
+                        if (notification is ScrollEndNotification) {
+                          if (notification.metrics.pixels >=
+                                  notification.metrics.maxScrollExtent - 100 &&
+                              !_controller.isFetchingMore) {
+                            _controller.loadMore();
+                          }
                         }
-                      }
 
-                      return false;
-                    },
-                    child: CupertinoScrollbar(
-                      controller: _scrollController,
-                      child: CustomScrollView(
+                        return false;
+                      },
+                      child: CupertinoScrollbar(
                         controller: _scrollController,
-                        slivers: [
-                          SliverPadding(
-                            padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),
-                            sliver: SliverList.builder(
-                              itemCount: _controller.logs.length,
-                              itemBuilder: (context, index) =>
-                                  CupertinoLogEntryCard(
-                                log: _controller.logs[index],
-                              ),
-                            ),
-                          ),
-                          if (_controller.isFetchingMore)
-                            const SliverToBoxAdapter(
-                              child: Padding(
-                                padding: EdgeInsets.all(16),
-                                child: Center(
-                                  child: CupertinoActivityIndicator(),
+                        child: CustomScrollView(
+                          controller: _scrollController,
+                          slivers: [
+                            SliverPadding(
+                              padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),
+                              sliver: SliverList.builder(
+                                itemCount: _controller.logs.length,
+                                itemBuilder: (context, index) =>
+                                    CupertinoLogEntryCard(
+                                  log: _controller.logs[index],
                                 ),
                               ),
                             ),
-                        ],
+                            if (_controller.isFetchingMore)
+                              const SliverToBoxAdapter(
+                                child: Padding(
+                                  padding: EdgeInsets.all(16),
+                                  child: Center(
+                                    child: CupertinoActivityIndicator(),
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                }
-              },
+                    );
+                  }
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

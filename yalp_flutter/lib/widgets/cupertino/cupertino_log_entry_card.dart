@@ -19,7 +19,7 @@ class CupertinoLogEntryCard extends StatelessWidget {
     final theme = CupertinoTheme.of(context);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
         clipBehavior: Clip.antiAlias,
@@ -32,34 +32,49 @@ class CupertinoLogEntryCard extends StatelessWidget {
           child: Container(
             color: CupertinoColors.secondarySystemGroupedBackground
                 .resolveFrom(context),
-            padding: const EdgeInsets.all(4),
+            padding: const EdgeInsets.all(8),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   child: Text(
                     log.message,
                     style: theme.textTheme.textStyle,
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                  child: Text(
-                    formatDate(
-                      log.timestamp,
-                      [
-                        ...[dd, '.', mm, '.', yyyy],
-                        ' - ',
-                        ...[HH, ':', nn, ':', ss, '.', SSS]
-                      ],
-                    ),
-                    style: theme.textTheme.textStyle,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Timestamp',
+                        style: theme.textTheme.textStyle,
+                      ),
+                      const Spacer(),
+                      Text(
+                        formatDate(
+                          log.timestamp,
+                          [
+                            ...[dd, '.', mm, '.', yyyy],
+                            ' - ',
+                            ...[HH, ':', nn, ':', ss, '.', SSS]
+                          ],
+                        ),
+                        style: theme.textTheme.textStyle.copyWith(
+                          color: CupertinoColors.secondaryLabel
+                              .resolveFrom(context),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   child: Row(
                     children: [
                       Text(
@@ -83,7 +98,8 @@ class CupertinoLogEntryCard extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   child: Wrap(
                     spacing: 8,
                     runSpacing: 8,
@@ -104,7 +120,8 @@ class CupertinoLogEntryCard extends StatelessWidget {
                 ),
                 if (log.error case final error?)
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     child: Text(
                       '$error',
                       style: theme.textTheme.textStyle.copyWith(
@@ -117,7 +134,8 @@ class CupertinoLogEntryCard extends StatelessWidget {
                         log.level == LogLevel.fatal ||
                         log.level == LogLevel.warning))
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     child: Text(
                       '$stacktrace'.trimRight(),
                       style: theme.textTheme.textStyle.copyWith(
