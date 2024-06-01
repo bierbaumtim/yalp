@@ -6,13 +6,13 @@ issue_tracker: https://github.com/bierbaumtim/yalp/issues
 homepage: https://github.com/bierbaumtim/yalp
 
 environment:
-  sdk: ">=3.2.0 <4.0.0"
+  sdk: ">=3.4.0 <4.0.0"
 
 # Add regular dependencies here.
 dependencies:
   stack_trace: ^1.11.1
-  uuid: ^4.3.3
+  uuid: ^4.4.0
 
 dev_dependencies:
-  lints: ^3.0.0
-  test: ^1.24.0
+  lints: ^4.0.0
+  test: ^1.25.5
