@@ -36,21 +36,21 @@ class LogViewController extends ChangeNotifier {
     _filterLevels = levels;
     notifyListeners();
 
-    _refetchLogs();
+    refetchLogs();
   }
 
   set filterTags(List<String> tags) {
     _filterTags = tags;
     notifyListeners();
 
-    _refetchLogs();
+    refetchLogs();
   }
 
   set filterClassnames(List<String> classnames) {
     _filterClassnames = classnames;
     notifyListeners();
 
-    _refetchLogs();
+    refetchLogs();
   }
 
   void setTimespanFilter(DateTime? start, DateTime? end) {
@@ -58,7 +58,7 @@ class LogViewController extends ChangeNotifier {
     _filterEndDate = end;
     notifyListeners();
 
-    _refetchLogs();
+    refetchLogs();
   }
 
   Future<void> init() async {
@@ -117,7 +117,7 @@ class LogViewController extends ChangeNotifier {
 
   Future<LogStatistics> getStats() => Logger.root.logStorage.getStatistics();
 
-  Future<void> _refetchLogs() async {
+  Future<void> refetchLogs() async {
     _isLoading = true;
     notifyListeners();
 
@@ -127,6 +127,7 @@ class LogViewController extends ChangeNotifier {
           limit: _limit,
           level: _filterLevels,
           tags: _filterTags,
+          classnames: _filterClassnames,
           start: _filterStartDate,
           end: _filterEndDate,
         ),
@@ -136,6 +137,13 @@ class LogViewController extends ChangeNotifier {
     }
 
     _isLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> clearLogs() async {
+    await Logger.root.logStorage.clearLogs();
+
+    _logs = [];
     notifyListeners();
   }
 }

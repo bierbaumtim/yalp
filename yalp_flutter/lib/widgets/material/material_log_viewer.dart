@@ -44,7 +44,7 @@ class _MaterialLogViewerState extends State<MaterialLogViewer> {
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
-            onPressed: () => _controller.loadLogs(),
+            onPressed: () => _controller.refetchLogs(),
           ),
           IconButton(
             icon: const Icon(Icons.bar_chart_rounded),
@@ -258,6 +258,41 @@ class _LogStatsBottomsheet extends StatelessWidget {
             ListTile(
               title: const Text('Fatal count'),
               trailing: Text('${snapshot.data!.fatalCount}'),
+            ),
+            const Divider(indent: 8, endIndent: 8),
+            ListTile(
+              title: const Text('Clear logs'),
+              trailing: const Icon(Icons.delete_rounded),
+              textColor: Theme.of(context).colorScheme.error,
+              iconColor: Theme.of(context).colorScheme.error,
+              onTap: () async {
+                final result = await showAdaptiveDialog<bool>(
+                  context: context,
+                  builder: (context) => AlertDialog.adaptive(
+                    title: const Text('Clear logs'),
+                    content:
+                        const Text('Are you sure you want to clear all logs?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(false),
+                        child: const Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(true),
+                        child: const Text('Clear'),
+                      ),
+                    ],
+                  ),
+                );
+
+                if (result ?? false) {
+                  controller.clearLogs();
+
+                  if (context.mounted) {
+                    Navigator.of(context).pop();
+                  }
+                }
+              },
             ),
           ],
         );
