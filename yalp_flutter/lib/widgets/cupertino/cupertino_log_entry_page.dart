@@ -64,7 +64,7 @@ class _LogEntryDetails extends StatelessWidget {
   final LogEntryPageController controller;
 
   const _LogEntryDetails({
-    // ignore: unused_element
+    // ignore: unused_element_parameter
     super.key,
     required this.controller,
   });
@@ -237,7 +237,7 @@ class _ConnectedLogs extends StatelessWidget {
   final LogEntryPageController controller;
 
   const _ConnectedLogs({
-    // ignore: unused_element
+    // ignore: unused_element_parameter
     super.key,
     required this.controller,
   });
