@@ -126,7 +126,7 @@ class _MaterialLogViewerState extends State<MaterialLogViewer> {
 
 class _FilterBar extends StatelessWidget {
   const _FilterBar({
-    // ignore: unused_element
+    // ignore: unused_element_parameter
     super.key,
     required this.controller,
   });
@@ -208,7 +208,7 @@ class _LogStatsBottomsheet extends StatelessWidget {
   final LogViewController controller;
 
   const _LogStatsBottomsheet({
-    // ignore: unused_element
+    // ignore: unused_element_parameter
     super.key,
     required this.controller,
   });
