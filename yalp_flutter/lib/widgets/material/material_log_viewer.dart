@@ -52,9 +52,8 @@ class _MaterialLogViewerState extends State<MaterialLogViewer> {
               context: context,
               showDragHandle: true,
               enableDrag: true,
-              builder: (context) => _LogStatsBottomsheet(
-                controller: _controller,
-              ),
+              builder: (context) =>
+                  _LogStatsBottomsheet(controller: _controller),
             ),
           ),
         ],
@@ -70,13 +69,9 @@ class _MaterialLogViewerState extends State<MaterialLogViewer> {
         animation: _controller,
         builder: (context, _) {
           if (_controller.isLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           } else if (_controller.logs.isEmpty) {
-            return const Center(
-              child: Text('No logs found'),
-            );
+            return const Center(child: Text('No logs found'));
           } else {
             return NotificationListener(
               onNotification: (notification) {
@@ -99,18 +94,15 @@ class _MaterialLogViewerState extends State<MaterialLogViewer> {
                       padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),
                       sliver: SliverList.builder(
                         itemCount: _controller.logs.length,
-                        itemBuilder: (context, index) => LogEntryCard(
-                          log: _controller.logs[index],
-                        ),
+                        itemBuilder: (context, index) =>
+                            LogEntryCard(log: _controller.logs[index]),
                       ),
                     ),
                     if (_controller.isFetchingMore)
                       const SliverToBoxAdapter(
                         child: Padding(
                           padding: EdgeInsets.all(16),
-                          child: Center(
-                            child: CircularProgressIndicator(),
-                          ),
+                          child: Center(child: CircularProgressIndicator()),
                         ),
                       ),
                   ],
@@ -219,13 +211,9 @@ class _LogStatsBottomsheet extends StatelessWidget {
       future: controller.getStats(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Center(
-            child: Text('Error: ${snapshot.error}'),
-          );
+          return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const Center(child: CircularProgressIndicator());
         }
 
         return ListView(
@@ -270,8 +258,9 @@ class _LogStatsBottomsheet extends StatelessWidget {
                   context: context,
                   builder: (context) => AlertDialog.adaptive(
                     title: const Text('Clear logs'),
-                    content:
-                        const Text('Are you sure you want to clear all logs?'),
+                    content: const Text(
+                      'Are you sure you want to clear all logs?',
+                    ),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(false),

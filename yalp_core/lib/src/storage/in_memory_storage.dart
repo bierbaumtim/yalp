@@ -41,30 +41,32 @@ class InMemoryStorage implements ILogStorage {
 
   @override
   Future<List<LogEntry>> getLogsFiltered(LogFilterOptions options) async {
-    final iter = _logs.where((log) {
-      if (options.tags.isNotEmpty && !options.tags.contains(log.tag)) {
-        return false;
-      }
+    final iter = _logs
+        .where((log) {
+          if (options.tags.isNotEmpty && !options.tags.contains(log.tag)) {
+            return false;
+          }
 
-      if (options.level.isNotEmpty && !options.level.contains(log.level)) {
-        return false;
-      }
+          if (options.level.isNotEmpty && !options.level.contains(log.level)) {
+            return false;
+          }
 
-      if (options.classnames.isNotEmpty &&
-          !options.classnames.contains(log.className)) {
-        return false;
-      }
+          if (options.classnames.isNotEmpty &&
+              !options.classnames.contains(log.className)) {
+            return false;
+          }
 
-      if (options.start != null && log.timestamp.isBefore(options.start!)) {
-        return false;
-      }
+          if (options.start != null && log.timestamp.isBefore(options.start!)) {
+            return false;
+          }
 
-      if (options.end != null && log.timestamp.isAfter(options.end!)) {
-        return false;
-      }
+          if (options.end != null && log.timestamp.isAfter(options.end!)) {
+            return false;
+          }
 
-      return true;
-    }).skip(options.offset ?? 0);
+          return true;
+        })
+        .skip(options.offset ?? 0);
 
     return switch (options.limit) {
       var limit? => iter.take(limit).toList(),
@@ -99,9 +101,7 @@ class InMemoryStorage implements ILogStorage {
 
   @override
   Future<List<String>> getTags() async => _logs
-      .where(
-        (log) => log.tag != null,
-      )
+      .where((log) => log.tag != null)
       .map<String>((log) => log.tag!)
       .toSet()
       .toList();

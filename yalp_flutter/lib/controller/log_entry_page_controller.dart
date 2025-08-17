@@ -12,9 +12,7 @@ class LogEntryPageController extends ChangeNotifier {
   bool get isLoadingConnectedLogs => _isLoadingConnectedLogs;
   List<LogEntry> get connectedLogs => _connectedLogs;
 
-  LogEntryPageController({
-    required LogEntry entry,
-  }) : _entry = entry {
+  LogEntryPageController({required LogEntry entry}) : _entry = entry {
     if (entry.invocation != null) {
       _fetchConnectedLogs();
     }

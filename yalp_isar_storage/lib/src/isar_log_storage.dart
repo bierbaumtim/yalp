@@ -71,8 +71,10 @@ class IsarLogStorage implements ILogStorage {
 
   @override
   Future<List<LogEntry>> getAllLogs() async {
-    final entities =
-        await _db.logEntries.where().sortByTimestampDesc().findAll();
+    final entities = await _db.logEntries
+        .where()
+        .sortByTimestampDesc()
+        .findAll();
 
     return entities.map(_fromEntity).toList();
   }
@@ -126,10 +128,7 @@ class IsarLogStorage implements ILogStorage {
           (q) => q.timestampGreaterThan(options.start!),
         )
         .and()
-        .optional(
-          options.end != null,
-          (q) => q.timestampLessThan(options.end!),
-        )
+        .optional(options.end != null, (q) => q.timestampLessThan(options.end!))
         .and()
         .optional(
           options.invocation != null,

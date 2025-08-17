@@ -14,10 +14,11 @@ class LogStatistics {
     required this.warningCount,
     required this.errorCount,
     required this.fatalCount,
-  }) : logCount = traceCount +
-            debugCount +
-            infoCount +
-            warningCount +
-            errorCount +
-            fatalCount;
+  }) : logCount =
+           traceCount +
+           debugCount +
+           infoCount +
+           warningCount +
+           errorCount +
+           fatalCount;
 }

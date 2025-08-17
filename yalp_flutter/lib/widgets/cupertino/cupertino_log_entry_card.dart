@@ -7,10 +7,7 @@ import '../tag.dart';
 import 'cupertino_log_entry_page.dart';
 
 class CupertinoLogEntryCard extends StatelessWidget {
-  const CupertinoLogEntryCard({
-    super.key,
-    required this.log,
-  });
+  const CupertinoLogEntryCard({super.key, required this.log});
 
   final LogEntry log;
 
@@ -31,8 +28,9 @@ class CupertinoLogEntryCard extends StatelessWidget {
             ),
           ),
           child: Container(
-            color: CupertinoColors.secondarySystemGroupedBackground
-                .resolveFrom(context),
+            color: CupertinoColors.secondarySystemGroupedBackground.resolveFrom(
+              context,
+            ),
             padding: const EdgeInsets.all(8),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -40,37 +38,29 @@ class CupertinoLogEntryCard extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(4),
-                  child: Text(
-                    log.message,
-                    style: theme.textTheme.textStyle,
-                  ),
+                  child: Text(log.message, style: theme.textTheme.textStyle),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(4),
                   child: Row(
                     children: [
-                      Text(
-                        'Timestamp',
-                        style: theme.textTheme.textStyle,
-                      ),
+                      Text('Timestamp', style: theme.textTheme.textStyle),
                       const Spacer(),
                       Text(
-                        formatDate(
-                          log.timestamp,
-                          [
-                            ...[dd, '.', mm, '.', yyyy],
-                            ' - ',
-                            ...[HH, ':', nn, ':', ss, '.', SSS]
-                          ],
-                        ),
+                        formatDate(log.timestamp, [
+                          ...[dd, '.', mm, '.', yyyy],
+                          ' - ',
+                          ...[HH, ':', nn, ':', ss, '.', SSS],
+                        ]),
                         style: theme.textTheme.textStyle.copyWith(
-                          color: CupertinoColors.secondaryLabel
-                              .resolveFrom(context),
-                          fontSize: switch (
-                              theme.textTheme.textStyle.fontSize) {
-                            final fontsize? => fontsize - 2,
-                            _ => null,
-                          },
+                          color: CupertinoColors.secondaryLabel.resolveFrom(
+                            context,
+                          ),
+                          fontSize:
+                              switch (theme.textTheme.textStyle.fontSize) {
+                                final fontsize? => fontsize - 2,
+                                _ => null,
+                              },
                         ),
                       ),
                     ],
@@ -80,10 +70,7 @@ class CupertinoLogEntryCard extends StatelessWidget {
                   padding: const EdgeInsets.all(4),
                   child: Row(
                     children: [
-                      Text(
-                        'Level',
-                        style: theme.textTheme.textStyle,
-                      ),
+                      Text('Level', style: theme.textTheme.textStyle),
                       const Spacer(),
                       Tag(
                         color: switch (log.level) {
@@ -93,8 +80,7 @@ class CupertinoLogEntryCard extends StatelessWidget {
                           LogLevel.warning => CupertinoColors.systemOrange,
                           LogLevel.error => CupertinoColors.systemRed,
                           LogLevel.fatal => CupertinoColors.systemPurple,
-                        }
-                            .resolveFrom(context),
+                        }.resolveFrom(context),
                         value: log.level.name,
                       ),
                     ],
@@ -114,8 +100,9 @@ class CupertinoLogEntryCard extends StatelessWidget {
                       if (log.invocation case final invocation?)
                         Tag(
                           value: invocation,
-                          color:
-                              CupertinoColors.systemPink.resolveFrom(context),
+                          color: CupertinoColors.systemPink.resolveFrom(
+                            context,
+                          ),
                         ),
                     ],
                   ),

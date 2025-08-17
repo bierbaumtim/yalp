@@ -22,22 +22,17 @@ class TimespanFilterChip extends StatelessWidget {
       label: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            switch ((startDate, endDate)) {
-              (null, null) => 'All time',
-              (null, DateTime endDate) =>
-                'Before ${formatDate(endDate, _format)}',
-              (DateTime startDate, null) =>
-                'After ${formatDate(startDate, _format)}',
-              (DateTime startDate, DateTime endDate) =>
-                '${formatDate(startDate, _format)} - ${formatDate(endDate, _format)}',
-            },
-          ),
+          Text(switch ((startDate, endDate)) {
+            (null, null) => 'All time',
+            (null, DateTime endDate) =>
+              'Before ${formatDate(endDate, _format)}',
+            (DateTime startDate, null) =>
+              'After ${formatDate(startDate, _format)}',
+            (DateTime startDate, DateTime endDate) =>
+              '${formatDate(startDate, _format)} - ${formatDate(endDate, _format)}',
+          }),
           const SizedBox(width: 8),
-          const Icon(
-            Icons.arrow_drop_down_rounded,
-            size: 18,
-          ),
+          const Icon(Icons.arrow_drop_down_rounded, size: 18),
         ],
       ),
       labelPadding: const EdgeInsets.only(left: 8),
@@ -100,10 +95,9 @@ class _TimespanFilterBottomsheetState
               padding: const EdgeInsets.symmetric(vertical: 22),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSurfaceVariant
-                      .withValues(alpha: 0.4),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
                   borderRadius: BorderRadius.circular(4),
                 ),
                 height: 4,
@@ -116,12 +110,10 @@ class _TimespanFilterBottomsheetState
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  switch (startDate) {
-                    final date? => formatDate(date, _format),
-                    null => '   -   ',
-                  },
-                ),
+                Text(switch (startDate) {
+                  final date? => formatDate(date, _format),
+                  null => '   -   ',
+                }),
                 if (startDate != null) ...[
                   const SizedBox(width: 8),
                   IconButton(
@@ -131,28 +123,27 @@ class _TimespanFilterBottomsheetState
                 ],
               ],
             ),
-            onTap: () => showDatePicker(
-              context: context,
-              initialDate: startDate ?? DateTime.now(),
-              firstDate: DateTime(2000),
-              lastDate: DateTime.now(),
-            ).then((value) {
-              if (value != null) {
-                setState(() => startDate = value);
-              }
-            }),
+            onTap: () =>
+                showDatePicker(
+                  context: context,
+                  initialDate: startDate ?? DateTime.now(),
+                  firstDate: DateTime(2000),
+                  lastDate: DateTime.now(),
+                ).then((value) {
+                  if (value != null) {
+                    setState(() => startDate = value);
+                  }
+                }),
           ),
           ListTile(
             title: const Text('Before'),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  switch (endDate) {
-                    final date? => formatDate(date, _format),
-                    null => '   -   ',
-                  },
-                ),
+                Text(switch (endDate) {
+                  final date? => formatDate(date, _format),
+                  null => '   -   ',
+                }),
                 if (endDate != null) ...[
                   const SizedBox(width: 8),
                   IconButton(
@@ -162,16 +153,17 @@ class _TimespanFilterBottomsheetState
                 ],
               ],
             ),
-            onTap: () => showDatePicker(
-              context: context,
-              initialDate: endDate ?? DateTime.now(),
-              firstDate: DateTime(2000),
-              lastDate: DateTime.now(),
-            ).then((value) {
-              if (value != null) {
-                setState(() => endDate = value);
-              }
-            }),
+            onTap: () =>
+                showDatePicker(
+                  context: context,
+                  initialDate: endDate ?? DateTime.now(),
+                  firstDate: DateTime(2000),
+                  lastDate: DateTime.now(),
+                ).then((value) {
+                  if (value != null) {
+                    setState(() => endDate = value);
+                  }
+                }),
           ),
           Align(
             alignment: Alignment.centerRight,

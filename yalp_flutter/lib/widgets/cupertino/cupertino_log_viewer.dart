@@ -59,21 +59,15 @@ class _CupertinoLogViewerState extends State<CupertinoLogViewer> {
         child: Column(
           children: [
             // TODO: Implement filter chips
-            const Row(
-              children: [],
-            ),
+            const Row(children: []),
             Expanded(
               child: AnimatedBuilder(
                 animation: _controller,
                 builder: (context, _) {
                   if (_controller.isLoading) {
-                    return const Center(
-                      child: CupertinoActivityIndicator(),
-                    );
+                    return const Center(child: CupertinoActivityIndicator());
                   } else if (_controller.logs.isEmpty) {
-                    return const Center(
-                      child: Text('No logs found'),
-                    );
+                    return const Center(child: Text('No logs found'));
                   } else {
                     return NotificationListener(
                       onNotification: (notification) {
@@ -98,8 +92,8 @@ class _CupertinoLogViewerState extends State<CupertinoLogViewer> {
                                 itemCount: _controller.logs.length,
                                 itemBuilder: (context, index) =>
                                     CupertinoLogEntryCard(
-                                  log: _controller.logs[index],
-                                ),
+                                      log: _controller.logs[index],
+                                    ),
                               ),
                             ),
                             if (_controller.isFetchingMore)

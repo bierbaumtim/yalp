@@ -155,8 +155,8 @@ sealed class _BaseLogger {
     final (className, functionName) = switch (context) {
       final ctx? => (ctx.className, ctx.functionName),
       _ => extractClassAndFunctionFromStacktrace(
-          stackTrace ?? StackTrace.current,
-        ),
+        stackTrace ?? StackTrace.current,
+      ),
     };
 
     final (invocation, parentInvocation) = switch (context) {

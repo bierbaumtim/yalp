@@ -12,9 +12,9 @@ import 'package:stack_trace/stack_trace.dart';
     [] => ('', ''),
     [final element] => ('', element),
     [final topLevel, ..., '<fn>'] => (
-        frame?.uri.pathSegments.lastOrNull ?? '',
-        topLevel
-      ),
+      frame?.uri.pathSegments.lastOrNull ?? '',
+      topLevel,
+    ),
     [final first, ..., final last] => (first, last),
   };
 }

@@ -14,20 +14,12 @@ class Tag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 8,
-        vertical: 4,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(8),
       ),
-      child: Text(
-        value,
-        style: const TextStyle(
-          color: Colors.white,
-        ),
-      ),
+      child: Text(value, style: const TextStyle(color: Colors.white)),
     );
   }
 }

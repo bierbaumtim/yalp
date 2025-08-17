@@ -10,10 +10,7 @@ import 'cupertino_log_entry_card.dart';
 class CupertinoLogEntryPage extends StatefulWidget {
   final LogEntry entry;
 
-  const CupertinoLogEntryPage({
-    super.key,
-    required this.entry,
-  });
+  const CupertinoLogEntryPage({super.key, required this.entry});
 
   @override
   State<CupertinoLogEntryPage> createState() => _CupertinoLogEntryPageState();
@@ -74,19 +71,14 @@ class _LogEntryDetails extends StatelessWidget {
     final theme = CupertinoTheme.of(context);
 
     return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(
-        middle: Text('Details'),
-      ),
+      navigationBar: const CupertinoNavigationBar(middle: Text('Details')),
       child: SafeArea(
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           children: [
             Padding(
               padding: const EdgeInsets.only(bottom: 4),
-              child: Text(
-                'Message',
-                style: theme.textTheme.navTitleTextStyle,
-              ),
+              child: Text('Message', style: theme.textTheme.navTitleTextStyle),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 4),
@@ -99,10 +91,7 @@ class _LogEntryDetails extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 4),
               child: Row(
                 children: [
-                  Text(
-                    'Level',
-                    style: theme.textTheme.textStyle,
-                  ),
+                  Text('Level', style: theme.textTheme.textStyle),
                   const Spacer(),
                   Tag(
                     color: switch (controller.entry.level) {
@@ -112,8 +101,7 @@ class _LogEntryDetails extends StatelessWidget {
                       LogLevel.warning => CupertinoColors.systemOrange,
                       LogLevel.error => CupertinoColors.systemRed,
                       LogLevel.fatal => CupertinoColors.systemPurple,
-                    }
-                        .resolveFrom(context),
+                    }.resolveFrom(context),
                     value: controller.entry.level.name,
                   ),
                 ],
@@ -123,20 +111,14 @@ class _LogEntryDetails extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 4),
               child: Row(
                 children: [
-                  Text(
-                    'Timestamp',
-                    style: theme.textTheme.textStyle,
-                  ),
+                  Text('Timestamp', style: theme.textTheme.textStyle),
                   const Spacer(),
                   Text(
-                    formatDate(
-                      controller.entry.timestamp,
-                      [
-                        ...[dd, '.', mm, '.', yyyy],
-                        ' - ',
-                        ...[HH, ':', nn, ':', ss, '.', SSS]
-                      ],
-                    ),
+                    formatDate(controller.entry.timestamp, [
+                      ...[dd, '.', mm, '.', yyyy],
+                      ' - ',
+                      ...[HH, ':', nn, ':', ss, '.', SSS],
+                    ]),
                     style: theme.textTheme.textStyle,
                   ),
                 ],
@@ -147,10 +129,7 @@ class _LogEntryDetails extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Row(
                   children: [
-                    Text(
-                      'Tag',
-                      style: theme.textTheme.textStyle,
-                    ),
+                    Text('Tag', style: theme.textTheme.textStyle),
                     const Spacer(),
                     Tag(value: tag),
                   ],
@@ -160,10 +139,7 @@ class _LogEntryDetails extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 4),
               child: Row(
                 children: [
-                  Text(
-                    'Function',
-                    style: theme.textTheme.textStyle,
-                  ),
+                  Text('Function', style: theme.textTheme.textStyle),
                   const Spacer(),
                   Tag(
                     color: CupertinoColors.systemBlue.resolveFrom(context),
@@ -178,10 +154,7 @@ class _LogEntryDetails extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Row(
                   children: [
-                    Text(
-                      'Invocation',
-                      style: theme.textTheme.textStyle,
-                    ),
+                    Text('Invocation', style: theme.textTheme.textStyle),
                     const Spacer(),
                     Tag(
                       color: CupertinoColors.systemPink.resolveFrom(context),
@@ -193,10 +166,7 @@ class _LogEntryDetails extends StatelessWidget {
             if (controller.entry.error case final error?) ...[
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),
-                child: Text(
-                  'Error',
-                  style: theme.textTheme.navTitleTextStyle,
-                ),
+                child: Text('Error', style: theme.textTheme.navTitleTextStyle),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),
@@ -252,16 +222,13 @@ class _ConnectedLogs extends StatelessWidget {
         animation: controller,
         builder: (context, _) {
           if (controller.isLoadingConnectedLogs) {
-            return const Center(
-              child: CupertinoActivityIndicator(),
-            );
+            return const Center(child: CupertinoActivityIndicator());
           }
 
           return ListView.builder(
             itemCount: controller.connectedLogs.length,
-            itemBuilder: (context, index) => CupertinoLogEntryCard(
-              log: controller.connectedLogs[index],
-            ),
+            itemBuilder: (context, index) =>
+                CupertinoLogEntryCard(log: controller.connectedLogs[index]),
           );
         },
       ),

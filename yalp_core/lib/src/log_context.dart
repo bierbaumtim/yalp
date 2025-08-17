@@ -6,21 +6,12 @@ class LogContext {
   final String className;
   final String functionName;
 
-  const LogContext._({
-    required this.className,
-    required this.functionName,
-  });
+  const LogContext._({required this.className, required this.functionName});
 
-  factory LogContext({
-    String? className,
-    String? functionName,
-  }) {
+  factory LogContext({String? className, String? functionName}) {
     final (cn, fn) = _getClassNameAndFunctionName(className, functionName);
 
-    return LogContext._(
-      className: cn,
-      functionName: fn,
-    );
+    return LogContext._(className: cn, functionName: fn);
   }
 
   factory LogContext.tracked({String? className, String? functionName}) =>
@@ -38,10 +29,7 @@ class TrackedLogContext extends LogContext {
     this.parentInvocation,
   }) : super._();
 
-  factory TrackedLogContext({
-    String? className,
-    String? functionName,
-  }) {
+  factory TrackedLogContext({String? className, String? functionName}) {
     final (cn, fn) = _getClassNameAndFunctionName(className, functionName);
 
     return TrackedLogContext._(
@@ -52,10 +40,7 @@ class TrackedLogContext extends LogContext {
     );
   }
 
-  TrackedLogContext nested({
-    String? className,
-    String? functionName,
-  }) {
+  TrackedLogContext nested({String? className, String? functionName}) {
     final (cn, fn) = _getClassNameAndFunctionName(className, functionName);
 
     return TrackedLogContext._(

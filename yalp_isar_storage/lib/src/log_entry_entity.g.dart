@@ -22,11 +22,7 @@ const LogEntryEntitySchema = CollectionSchema(
       name: r'className',
       type: IsarType.string,
     ),
-    r'error': PropertySchema(
-      id: 1,
-      name: r'error',
-      type: IsarType.string,
-    ),
+    r'error': PropertySchema(id: 1, name: r'error', type: IsarType.string),
     r'functionName': PropertySchema(
       id: 2,
       name: r'functionName',
@@ -43,11 +39,7 @@ const LogEntryEntitySchema = CollectionSchema(
       type: IsarType.byte,
       enumMap: _LogEntryEntitylevelEnumValueMap,
     ),
-    r'message': PropertySchema(
-      id: 5,
-      name: r'message',
-      type: IsarType.string,
-    ),
+    r'message': PropertySchema(id: 5, name: r'message', type: IsarType.string),
     r'parentInvocation': PropertySchema(
       id: 6,
       name: r'parentInvocation',
@@ -58,16 +50,12 @@ const LogEntryEntitySchema = CollectionSchema(
       name: r'stackTrace',
       type: IsarType.string,
     ),
-    r'tag': PropertySchema(
-      id: 8,
-      name: r'tag',
-      type: IsarType.string,
-    ),
+    r'tag': PropertySchema(id: 8, name: r'tag', type: IsarType.string),
     r'timestamp': PropertySchema(
       id: 9,
       name: r'timestamp',
       type: IsarType.dateTime,
-    )
+    ),
   },
   estimateSize: _logEntryEntityEstimateSize,
   serialize: _logEntryEntitySerialize,
@@ -85,7 +73,7 @@ const LogEntryEntitySchema = CollectionSchema(
           name: r'level',
           type: IndexType.value,
           caseSensitive: false,
-        )
+        ),
       ],
     ),
     r'tag': IndexSchema(
@@ -98,7 +86,7 @@ const LogEntryEntitySchema = CollectionSchema(
           name: r'tag',
           type: IndexType.hash,
           caseSensitive: true,
-        )
+        ),
       ],
     ),
     r'invocation': IndexSchema(
@@ -111,9 +99,9 @@ const LogEntryEntitySchema = CollectionSchema(
           name: r'invocation',
           type: IndexType.hash,
           caseSensitive: true,
-        )
+        ),
       ],
-    )
+    ),
   },
   links: {},
   embeddedSchemas: {},
@@ -197,7 +185,7 @@ LogEntryEntity _logEntryEntityDeserialize(
     invocation: reader.readStringOrNull(offsets[3]),
     level:
         _LogEntryEntitylevelValueEnumMap[reader.readByteOrNull(offsets[4])] ??
-            LogLevel.trace,
+        LogLevel.trace,
     message: reader.readString(offsets[5]),
     parentInvocation: reader.readStringOrNull(offsets[6]),
     stackTrace: reader.readStringOrNull(offsets[7]),
@@ -224,7 +212,8 @@ P _logEntryEntityDeserializeProp<P>(
       return (reader.readStringOrNull(offset)) as P;
     case 4:
       return (_LogEntryEntitylevelValueEnumMap[reader.readByteOrNull(offset)] ??
-          LogLevel.trace) as P;
+              LogLevel.trace)
+          as P;
     case 5:
       return (reader.readString(offset)) as P;
     case 6:
@@ -266,7 +255,10 @@ List<IsarLinkBase<dynamic>> _logEntryEntityGetLinks(LogEntryEntity object) {
 }
 
 void _logEntryEntityAttach(
-    IsarCollection<dynamic> col, Id id, LogEntryEntity object) {
+  IsarCollection<dynamic> col,
+  Id id,
+  LogEntryEntity object,
+) {
   object.id = id;
 }
 
@@ -290,17 +282,16 @@ extension LogEntryEntityQueryWhereSort
 extension LogEntryEntityQueryWhere
     on QueryBuilder<LogEntryEntity, LogEntryEntity, QWhereClause> {
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterWhereClause> idEqualTo(
-      Id id) {
+    Id id,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: id,
-        upper: id,
-      ));
+      return query.addWhereClause(IdWhereClause.between(lower: id, upper: id));
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterWhereClause> idNotEqualTo(
-      Id id) {
+    Id id,
+  ) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -323,8 +314,9 @@ extension LogEntryEntityQueryWhere
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterWhereClause> idGreaterThan(
-      Id id,
-      {bool include = false}) {
+    Id id, {
+    bool include = false,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.greaterThan(lower: id, includeLower: include),
@@ -333,8 +325,9 @@ extension LogEntryEntityQueryWhere
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterWhereClause> idLessThan(
-      Id id,
-      {bool include = false}) {
+    Id id, {
+    bool include = false,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.lessThan(upper: id, includeUpper: include),
@@ -349,72 +342,81 @@ extension LogEntryEntityQueryWhere
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: lowerId,
-        includeLower: includeLower,
-        upper: upperId,
-        includeUpper: includeUpper,
-      ));
+      return query.addWhereClause(
+        IdWhereClause.between(
+          lower: lowerId,
+          includeLower: includeLower,
+          upper: upperId,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterWhereClause> levelEqualTo(
-      LogLevel level) {
+    LogLevel level,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'level',
-        value: [level],
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.equalTo(indexName: r'level', value: [level]),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterWhereClause>
-      levelNotEqualTo(LogLevel level) {
+  levelNotEqualTo(LogLevel level) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'level',
-              lower: [],
-              upper: [level],
-              includeUpper: false,
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'level',
-              lower: [level],
-              includeLower: false,
-              upper: [],
-            ));
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'level',
+                lower: [],
+                upper: [level],
+                includeUpper: false,
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'level',
+                lower: [level],
+                includeLower: false,
+                upper: [],
+              ),
+            );
       } else {
         return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'level',
-              lower: [level],
-              includeLower: false,
-              upper: [],
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'level',
-              lower: [],
-              upper: [level],
-              includeUpper: false,
-            ));
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'level',
+                lower: [level],
+                includeLower: false,
+                upper: [],
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'level',
+                lower: [],
+                upper: [level],
+                includeUpper: false,
+              ),
+            );
       }
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterWhereClause>
-      levelGreaterThan(
-    LogLevel level, {
-    bool include = false,
-  }) {
+  levelGreaterThan(LogLevel level, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'level',
-        lower: [level],
-        includeLower: include,
-        upper: [],
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'level',
+          lower: [level],
+          includeLower: include,
+          upper: [],
+        ),
+      );
     });
   }
 
@@ -423,12 +425,14 @@ extension LogEntryEntityQueryWhere
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'level',
-        lower: [],
-        upper: [level],
-        includeUpper: include,
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'level',
+          lower: [],
+          upper: [level],
+          includeUpper: include,
+        ),
+      );
     });
   }
 
@@ -439,145 +443,165 @@ extension LogEntryEntityQueryWhere
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'level',
-        lower: [lowerLevel],
-        includeLower: includeLower,
-        upper: [upperLevel],
-        includeUpper: includeUpper,
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'level',
+          lower: [lowerLevel],
+          includeLower: includeLower,
+          upper: [upperLevel],
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterWhereClause> tagIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'tag',
-        value: [null],
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.equalTo(indexName: r'tag', value: [null]),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterWhereClause>
-      tagIsNotNull() {
+  tagIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'tag',
-        lower: [null],
-        includeLower: false,
-        upper: [],
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'tag',
+          lower: [null],
+          includeLower: false,
+          upper: [],
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterWhereClause> tagEqualTo(
-      String? tag) {
+    String? tag,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'tag',
-        value: [tag],
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.equalTo(indexName: r'tag', value: [tag]),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterWhereClause> tagNotEqualTo(
-      String? tag) {
+    String? tag,
+  ) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'tag',
-              lower: [],
-              upper: [tag],
-              includeUpper: false,
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'tag',
-              lower: [tag],
-              includeLower: false,
-              upper: [],
-            ));
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'tag',
+                lower: [],
+                upper: [tag],
+                includeUpper: false,
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'tag',
+                lower: [tag],
+                includeLower: false,
+                upper: [],
+              ),
+            );
       } else {
         return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'tag',
-              lower: [tag],
-              includeLower: false,
-              upper: [],
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'tag',
-              lower: [],
-              upper: [tag],
-              includeUpper: false,
-            ));
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'tag',
+                lower: [tag],
+                includeLower: false,
+                upper: [],
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'tag',
+                lower: [],
+                upper: [tag],
+                includeUpper: false,
+              ),
+            );
       }
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterWhereClause>
-      invocationIsNull() {
+  invocationIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'invocation',
-        value: [null],
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.equalTo(indexName: r'invocation', value: [null]),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterWhereClause>
-      invocationIsNotNull() {
+  invocationIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'invocation',
-        lower: [null],
-        includeLower: false,
-        upper: [],
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'invocation',
+          lower: [null],
+          includeLower: false,
+          upper: [],
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterWhereClause>
-      invocationEqualTo(String? invocation) {
+  invocationEqualTo(String? invocation) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'invocation',
-        value: [invocation],
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.equalTo(indexName: r'invocation', value: [invocation]),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterWhereClause>
-      invocationNotEqualTo(String? invocation) {
+  invocationNotEqualTo(String? invocation) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'invocation',
-              lower: [],
-              upper: [invocation],
-              includeUpper: false,
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'invocation',
-              lower: [invocation],
-              includeLower: false,
-              upper: [],
-            ));
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'invocation',
+                lower: [],
+                upper: [invocation],
+                includeUpper: false,
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'invocation',
+                lower: [invocation],
+                includeLower: false,
+                upper: [],
+              ),
+            );
       } else {
         return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'invocation',
-              lower: [invocation],
-              includeLower: false,
-              upper: [],
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'invocation',
-              lower: [],
-              upper: [invocation],
-              includeUpper: false,
-            ));
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'invocation',
+                lower: [invocation],
+                includeLower: false,
+                upper: [],
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'invocation',
+                lower: [],
+                upper: [invocation],
+                includeUpper: false,
+              ),
+            );
       }
     });
   }
@@ -586,53 +610,56 @@ extension LogEntryEntityQueryWhere
 extension LogEntryEntityQueryFilter
     on QueryBuilder<LogEntryEntity, LogEntryEntity, QFilterCondition> {
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      classNameEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  classNameEqualTo(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'className',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'className',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      classNameGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'className',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      classNameLessThan(
+  classNameGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'className',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'className',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      classNameBetween(
+  classNameLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'className',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+  classNameBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -640,153 +667,158 @@ extension LogEntryEntityQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'className',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'className',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      classNameStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  classNameStartsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'className',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'className',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      classNameEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  classNameEndsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'className',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'className',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      classNameContains(String value, {bool caseSensitive = true}) {
+  classNameContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'className',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'className',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      classNameMatches(String pattern, {bool caseSensitive = true}) {
+  classNameMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'className',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'className',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      classNameIsEmpty() {
+  classNameIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'className',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'className', value: ''),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      classNameIsNotEmpty() {
+  classNameIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'className',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'className', value: ''),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      errorIsNull() {
+  errorIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'error',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'error'),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      errorIsNotNull() {
+  errorIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'error',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'error'),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      errorEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
+  errorEqualTo(String? value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'error',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'error',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      errorGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'error',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      errorLessThan(
+  errorGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'error',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'error',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      errorBetween(
+  errorLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'error',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+  errorBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -794,135 +826,140 @@ extension LogEntryEntityQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'error',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'error',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      errorStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  errorStartsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'error',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'error',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      errorEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  errorEndsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'error',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'error',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      errorContains(String value, {bool caseSensitive = true}) {
+  errorContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'error',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'error',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      errorMatches(String pattern, {bool caseSensitive = true}) {
+  errorMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'error',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'error',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      errorIsEmpty() {
+  errorIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'error',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'error', value: ''),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      errorIsNotEmpty() {
+  errorIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'error',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'error', value: ''),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      functionNameEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  functionNameEqualTo(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'functionName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'functionName',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      functionNameGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'functionName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      functionNameLessThan(
+  functionNameGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'functionName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'functionName',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      functionNameBetween(
+  functionNameLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'functionName',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+  functionNameBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -930,140 +967,140 @@ extension LogEntryEntityQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'functionName',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'functionName',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      functionNameStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  functionNameStartsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'functionName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'functionName',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      functionNameEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  functionNameEndsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'functionName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'functionName',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      functionNameContains(String value, {bool caseSensitive = true}) {
+  functionNameContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'functionName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'functionName',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      functionNameMatches(String pattern, {bool caseSensitive = true}) {
+  functionNameMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'functionName',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'functionName',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      functionNameIsEmpty() {
+  functionNameIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'functionName',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'functionName', value: ''),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      functionNameIsNotEmpty() {
+  functionNameIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'functionName',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'functionName', value: ''),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      idIsNull() {
+  idIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'id',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'id'),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      idIsNotNull() {
+  idIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'id',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'id'),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition> idEqualTo(
-      Id? value) {
+    Id? value,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'id', value: value),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      idGreaterThan(
-    Id? value, {
-    bool include = false,
-  }) {
+  idGreaterThan(Id? value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      idLessThan(
-    Id? value, {
-    bool include = false,
-  }) {
+  idLessThan(Id? value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -1074,82 +1111,87 @@ extension LogEntryEntityQueryFilter
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'id',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'id',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      invocationIsNull() {
+  invocationIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'invocation',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'invocation'),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      invocationIsNotNull() {
+  invocationIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'invocation',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'invocation'),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      invocationEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
+  invocationEqualTo(String? value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'invocation',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'invocation',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      invocationGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'invocation',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      invocationLessThan(
+  invocationGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'invocation',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'invocation',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      invocationBetween(
+  invocationLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'invocation',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+  invocationBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -1157,191 +1199,195 @@ extension LogEntryEntityQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'invocation',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'invocation',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      invocationStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  invocationStartsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'invocation',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'invocation',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      invocationEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  invocationEndsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'invocation',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'invocation',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      invocationContains(String value, {bool caseSensitive = true}) {
+  invocationContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'invocation',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'invocation',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      invocationMatches(String pattern, {bool caseSensitive = true}) {
+  invocationMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'invocation',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'invocation',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      invocationIsEmpty() {
+  invocationIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'invocation',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'invocation', value: ''),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      invocationIsNotEmpty() {
+  invocationIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'invocation',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'invocation', value: ''),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      levelEqualTo(LogLevel value) {
+  levelEqualTo(LogLevel value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'level',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'level', value: value),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      levelGreaterThan(
-    LogLevel value, {
-    bool include = false,
-  }) {
+  levelGreaterThan(LogLevel value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'level',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'level',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      levelLessThan(
-    LogLevel value, {
-    bool include = false,
-  }) {
+  levelLessThan(LogLevel value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'level',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'level',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      levelBetween(
+  levelBetween(
     LogLevel lower,
     LogLevel upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'level',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'level',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      messageEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  messageEqualTo(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'message',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'message',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      messageGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'message',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      messageLessThan(
+  messageGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'message',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'message',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      messageBetween(
+  messageLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'message',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+  messageBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -1349,153 +1395,158 @@ extension LogEntryEntityQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'message',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'message',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      messageStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  messageStartsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'message',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'message',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      messageEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  messageEndsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'message',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'message',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      messageContains(String value, {bool caseSensitive = true}) {
+  messageContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'message',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'message',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      messageMatches(String pattern, {bool caseSensitive = true}) {
+  messageMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'message',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'message',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      messageIsEmpty() {
+  messageIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'message',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'message', value: ''),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      messageIsNotEmpty() {
+  messageIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'message',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'message', value: ''),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      parentInvocationIsNull() {
+  parentInvocationIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'parentInvocation',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'parentInvocation'),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      parentInvocationIsNotNull() {
+  parentInvocationIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'parentInvocation',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'parentInvocation'),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      parentInvocationEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
+  parentInvocationEqualTo(String? value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'parentInvocation',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'parentInvocation',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      parentInvocationGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'parentInvocation',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      parentInvocationLessThan(
+  parentInvocationGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'parentInvocation',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'parentInvocation',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      parentInvocationBetween(
+  parentInvocationLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'parentInvocation',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+  parentInvocationBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -1503,153 +1554,158 @@ extension LogEntryEntityQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'parentInvocation',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'parentInvocation',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      parentInvocationStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  parentInvocationStartsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'parentInvocation',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'parentInvocation',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      parentInvocationEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  parentInvocationEndsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'parentInvocation',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'parentInvocation',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      parentInvocationContains(String value, {bool caseSensitive = true}) {
+  parentInvocationContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'parentInvocation',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'parentInvocation',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      parentInvocationMatches(String pattern, {bool caseSensitive = true}) {
+  parentInvocationMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'parentInvocation',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'parentInvocation',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      parentInvocationIsEmpty() {
+  parentInvocationIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'parentInvocation',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'parentInvocation', value: ''),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      parentInvocationIsNotEmpty() {
+  parentInvocationIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'parentInvocation',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'parentInvocation', value: ''),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      stackTraceIsNull() {
+  stackTraceIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'stackTrace',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'stackTrace'),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      stackTraceIsNotNull() {
+  stackTraceIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'stackTrace',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'stackTrace'),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      stackTraceEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
+  stackTraceEqualTo(String? value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'stackTrace',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'stackTrace',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      stackTraceGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'stackTrace',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      stackTraceLessThan(
+  stackTraceGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'stackTrace',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'stackTrace',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      stackTraceBetween(
+  stackTraceLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'stackTrace',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+  stackTraceBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -1657,153 +1713,158 @@ extension LogEntryEntityQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'stackTrace',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'stackTrace',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      stackTraceStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  stackTraceStartsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'stackTrace',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'stackTrace',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      stackTraceEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  stackTraceEndsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'stackTrace',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'stackTrace',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      stackTraceContains(String value, {bool caseSensitive = true}) {
+  stackTraceContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'stackTrace',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'stackTrace',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      stackTraceMatches(String pattern, {bool caseSensitive = true}) {
+  stackTraceMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'stackTrace',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'stackTrace',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      stackTraceIsEmpty() {
+  stackTraceIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'stackTrace',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'stackTrace', value: ''),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      stackTraceIsNotEmpty() {
+  stackTraceIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'stackTrace',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'stackTrace', value: ''),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      tagIsNull() {
+  tagIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'tag',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'tag'),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      tagIsNotNull() {
+  tagIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'tag',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'tag'),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      tagEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
+  tagEqualTo(String? value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'tag',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'tag',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      tagGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'tag',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      tagLessThan(
+  tagGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'tag',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'tag',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      tagBetween(
+  tagLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'tag',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
+  tagBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -1811,140 +1872,141 @@ extension LogEntryEntityQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'tag',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'tag',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      tagStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  tagStartsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'tag',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'tag',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      tagEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  tagEndsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'tag',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'tag',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      tagContains(String value, {bool caseSensitive = true}) {
+  tagContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'tag',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'tag',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      tagMatches(String pattern, {bool caseSensitive = true}) {
+  tagMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'tag',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'tag',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      tagIsEmpty() {
+  tagIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'tag',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'tag', value: ''),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      tagIsNotEmpty() {
+  tagIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'tag',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'tag', value: ''),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      timestampEqualTo(DateTime value) {
+  timestampEqualTo(DateTime value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'timestamp',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'timestamp', value: value),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      timestampGreaterThan(
-    DateTime value, {
-    bool include = false,
-  }) {
+  timestampGreaterThan(DateTime value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'timestamp',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'timestamp',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      timestampLessThan(
-    DateTime value, {
-    bool include = false,
-  }) {
+  timestampLessThan(DateTime value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'timestamp',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'timestamp',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterFilterCondition>
-      timestampBetween(
+  timestampBetween(
     DateTime lower,
     DateTime upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'timestamp',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'timestamp',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 }
@@ -1964,7 +2026,7 @@ extension LogEntryEntityQuerySortBy
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy>
-      sortByClassNameDesc() {
+  sortByClassNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'className', Sort.desc);
     });
@@ -1983,28 +2045,28 @@ extension LogEntryEntityQuerySortBy
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy>
-      sortByFunctionName() {
+  sortByFunctionName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'functionName', Sort.asc);
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy>
-      sortByFunctionNameDesc() {
+  sortByFunctionNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'functionName', Sort.desc);
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy>
-      sortByInvocation() {
+  sortByInvocation() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'invocation', Sort.asc);
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy>
-      sortByInvocationDesc() {
+  sortByInvocationDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'invocation', Sort.desc);
     });
@@ -2029,35 +2091,35 @@ extension LogEntryEntityQuerySortBy
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy>
-      sortByMessageDesc() {
+  sortByMessageDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'message', Sort.desc);
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy>
-      sortByParentInvocation() {
+  sortByParentInvocation() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'parentInvocation', Sort.asc);
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy>
-      sortByParentInvocationDesc() {
+  sortByParentInvocationDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'parentInvocation', Sort.desc);
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy>
-      sortByStackTrace() {
+  sortByStackTrace() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'stackTrace', Sort.asc);
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy>
-      sortByStackTraceDesc() {
+  sortByStackTraceDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'stackTrace', Sort.desc);
     });
@@ -2082,7 +2144,7 @@ extension LogEntryEntityQuerySortBy
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy>
-      sortByTimestampDesc() {
+  sortByTimestampDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'timestamp', Sort.desc);
     });
@@ -2098,7 +2160,7 @@ extension LogEntryEntityQuerySortThenBy
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy>
-      thenByClassNameDesc() {
+  thenByClassNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'className', Sort.desc);
     });
@@ -2117,14 +2179,14 @@ extension LogEntryEntityQuerySortThenBy
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy>
-      thenByFunctionName() {
+  thenByFunctionName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'functionName', Sort.asc);
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy>
-      thenByFunctionNameDesc() {
+  thenByFunctionNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'functionName', Sort.desc);
     });
@@ -2143,14 +2205,14 @@ extension LogEntryEntityQuerySortThenBy
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy>
-      thenByInvocation() {
+  thenByInvocation() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'invocation', Sort.asc);
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy>
-      thenByInvocationDesc() {
+  thenByInvocationDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'invocation', Sort.desc);
     });
@@ -2175,35 +2237,35 @@ extension LogEntryEntityQuerySortThenBy
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy>
-      thenByMessageDesc() {
+  thenByMessageDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'message', Sort.desc);
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy>
-      thenByParentInvocation() {
+  thenByParentInvocation() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'parentInvocation', Sort.asc);
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy>
-      thenByParentInvocationDesc() {
+  thenByParentInvocationDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'parentInvocation', Sort.desc);
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy>
-      thenByStackTrace() {
+  thenByStackTrace() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'stackTrace', Sort.asc);
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy>
-      thenByStackTraceDesc() {
+  thenByStackTraceDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'stackTrace', Sort.desc);
     });
@@ -2228,7 +2290,7 @@ extension LogEntryEntityQuerySortThenBy
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QAfterSortBy>
-      thenByTimestampDesc() {
+  thenByTimestampDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'timestamp', Sort.desc);
     });
@@ -2237,29 +2299,32 @@ extension LogEntryEntityQuerySortThenBy
 
 extension LogEntryEntityQueryWhereDistinct
     on QueryBuilder<LogEntryEntity, LogEntryEntity, QDistinct> {
-  QueryBuilder<LogEntryEntity, LogEntryEntity, QDistinct> distinctByClassName(
-      {bool caseSensitive = true}) {
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QDistinct> distinctByClassName({
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'className', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<LogEntryEntity, LogEntryEntity, QDistinct> distinctByError(
-      {bool caseSensitive = true}) {
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QDistinct> distinctByError({
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'error', caseSensitive: caseSensitive);
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QDistinct>
-      distinctByFunctionName({bool caseSensitive = true}) {
+  distinctByFunctionName({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'functionName', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<LogEntryEntity, LogEntryEntity, QDistinct> distinctByInvocation(
-      {bool caseSensitive = true}) {
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QDistinct> distinctByInvocation({
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'invocation', caseSensitive: caseSensitive);
     });
@@ -2271,37 +2336,42 @@ extension LogEntryEntityQueryWhereDistinct
     });
   }
 
-  QueryBuilder<LogEntryEntity, LogEntryEntity, QDistinct> distinctByMessage(
-      {bool caseSensitive = true}) {
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QDistinct> distinctByMessage({
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'message', caseSensitive: caseSensitive);
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QDistinct>
-      distinctByParentInvocation({bool caseSensitive = true}) {
+  distinctByParentInvocation({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'parentInvocation',
-          caseSensitive: caseSensitive);
+      return query.addDistinctBy(
+        r'parentInvocation',
+        caseSensitive: caseSensitive,
+      );
     });
   }
 
-  QueryBuilder<LogEntryEntity, LogEntryEntity, QDistinct> distinctByStackTrace(
-      {bool caseSensitive = true}) {
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QDistinct> distinctByStackTrace({
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'stackTrace', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<LogEntryEntity, LogEntryEntity, QDistinct> distinctByTag(
-      {bool caseSensitive = true}) {
+  QueryBuilder<LogEntryEntity, LogEntryEntity, QDistinct> distinctByTag({
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'tag', caseSensitive: caseSensitive);
     });
   }
 
   QueryBuilder<LogEntryEntity, LogEntryEntity, QDistinct>
-      distinctByTimestamp() {
+  distinctByTimestamp() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'timestamp');
     });
@@ -2329,7 +2399,7 @@ extension LogEntryEntityQueryProperty
   }
 
   QueryBuilder<LogEntryEntity, String, QQueryOperations>
-      functionNameProperty() {
+  functionNameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'functionName');
     });
@@ -2354,7 +2424,7 @@ extension LogEntryEntityQueryProperty
   }
 
   QueryBuilder<LogEntryEntity, String?, QQueryOperations>
-      parentInvocationProperty() {
+  parentInvocationProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'parentInvocation');
     });

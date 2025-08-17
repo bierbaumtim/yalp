@@ -27,10 +27,7 @@ class FilterSelectionChip<T> extends StatelessWidget {
         children: [
           Text(filterSelectedValuesLabelBuilder(selectedValues)),
           const SizedBox(width: 8),
-          const Icon(
-            Icons.arrow_drop_down_rounded,
-            size: 18,
-          ),
+          const Icon(Icons.arrow_drop_down_rounded, size: 18),
         ],
       ),
       labelPadding: const EdgeInsets.only(left: 8),

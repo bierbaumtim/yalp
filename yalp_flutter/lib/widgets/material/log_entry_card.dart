@@ -7,10 +7,7 @@ import '../tag.dart';
 import 'log_entry_page.dart';
 
 class LogEntryCard extends StatelessWidget {
-  const LogEntryCard({
-    super.key,
-    required this.log,
-  });
+  const LogEntryCard({super.key, required this.log});
 
   final LogEntry log;
 
@@ -33,14 +30,11 @@ class LogEntryCard extends StatelessWidget {
             ListTile(
               title: Text(log.message),
               subtitle: Text(
-                formatDate(
-                  log.timestamp,
-                  [
-                    ...[dd, '.', mm, '.', yyyy],
-                    ' - ',
-                    ...[HH, ':', nn, ':', ss, '.', SSS]
-                  ],
-                ),
+                formatDate(log.timestamp, [
+                  ...[dd, '.', mm, '.', yyyy],
+                  ' - ',
+                  ...[HH, ':', nn, ':', ss, '.', SSS],
+                ]),
               ),
               trailing: Tag(
                 color: switch (log.level) {
