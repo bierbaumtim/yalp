@@ -11,23 +11,28 @@ class Logger extends _BaseLogger {
 }
 
 class RootLogger extends _BaseLogger {
-  late final ILogStorage? _logStorage;
+  late final ILogStorage _logStorage;
+  final bool _isInitialized = false;
 
   LogLevel minStorageLevel = LogLevel.trace;
 
   RootLogger._();
 
-  ILogStorage? get logStorage => _logStorage;
+  ILogStorage get logStorage => _logStorage;
 
   Future<void> init(ILogStorage storage, RetentionPolicy policy) async {
+    if (_isInitialized) return;
+
     _logStorage = storage;
 
-    await _logStorage!.init();
+    await _logStorage.init();
     await _logStorage.applyRetentionPolicy(policy);
   }
 
   Future<void> dispose() async {
-    await _logStorage?.dispose();
+    if (!_isInitialized) return;
+
+    await _logStorage.dispose();
   }
 }
 
@@ -181,6 +186,6 @@ sealed class _BaseLogger {
       parentInvocation: parentInvocation,
     );
 
-    root._logStorage?.writeLog(entry);
+    root._logStorage.writeLog(entry);
   }
 }
