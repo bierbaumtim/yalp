@@ -2,15 +2,21 @@ import 'package:yalp_core/yalp_core.dart';
 import 'package:yalp_drift_storage/src/database.dart';
 
 class DriftLogStorage implements ILogStorage {
-  late LogDatabase _db;
+  late final LogDatabase _db;
+  bool? _initialized;
 
   @override
   Future<void> init() async {
-    _db = await LogDatabase.connectToBackgroundIsolate();
+    if (_initialized == true) return;
+
+    _db = await LogDatabase.connectInBackground();
+    _initialized = true;
   }
 
   @override
   Future<void> dispose() async {
+    if (_initialized != true) return;
+
     await _db.close();
   }
 
@@ -75,17 +81,17 @@ class DriftLogStorage implements ILogStorage {
 
     for (final level in levels) {
       switch (level) {
-        case LogLevel.trace:
+        case .trace:
           traceCount++;
-        case LogLevel.debug:
+        case .debug:
           debugCount++;
-        case LogLevel.info:
+        case .info:
           infoCount++;
-        case LogLevel.warning:
+        case .warning:
           warningCount++;
-        case LogLevel.error:
+        case .error:
           errorCount++;
-        case LogLevel.fatal:
+        case .fatal:
           fatalCount++;
       }
     }
@@ -140,7 +146,7 @@ class DriftLogStorage implements ILogStorage {
       functionName: e.functionName,
       invocation: e.invocation,
       stackTrace: switch (e.stackTrace) {
-        var s? => StackTrace.fromString(s),
+        final s? => StackTrace.fromString(s),
         _ => null,
       },
       error: e.error,

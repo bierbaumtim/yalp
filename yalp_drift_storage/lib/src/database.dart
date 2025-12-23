@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:drift/drift.dart';
+import 'package:drift/native.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 import 'package:yalp_core/yalp_core.dart';
-import 'package:yalp_drift_storage/src/database_mixin.dart';
 
 part 'database.g.dart';
 
@@ -29,28 +33,22 @@ class LogEntryEntities extends Table {
 }
 
 @DriftDatabase(tables: [LogEntryEntities], daos: [LogDao])
-class LogDatabase extends _$LogDatabase with DatabaseBackgroundMixin {
+class LogDatabase extends _$LogDatabase {
+  LogDatabase(super.executor);
   LogDatabase.connect(super.connection) : super.connect();
 
-  static Future<LogDatabase> connectToBackgroundIsolate() async {
-    // create a moor executor in a new background isolate. If you want to start the isolate yourself, you
-    // can also call MoorIsolate.inCurrent() from the background isolate
-    final logDatabaseIsolate = await DatabaseBackgroundMixin.createMoorIsolate(
-      'yalp_log_drift_db',
-    );
+  static Future<LogDatabase> connectInBackground() async {
+    final filename = 'yalp_log_drift_db.sqlite';
+    final dir = await getApplicationDocumentsDirectory();
+    final path = p.join(dir.path, filename);
 
-    // we can now create a database connection that will use the isolate internally. This is NOT what's
-    // returned from _backgroundConnection, moor uses an internal proxy class for isolate communication.
-    final logDatabaseConnection = await logDatabaseIsolate.connect();
+    final executor = NativeDatabase.createInBackground(File(path));
 
-    return LogDatabase.connect(logDatabaseConnection);
+    return LogDatabase(executor);
   }
 
   @override
   int get schemaVersion => 1;
-
-  @override
-  String get dbFileName => 'yalp_log_drift_db';
 
   @override
   MigrationStrategy get migration {
